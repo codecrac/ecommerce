@@ -978,9 +978,9 @@
                     <div class="grid-space col-xl-5col col-1"></div>
                 </div>
                 <!-- End of Grid -->
-            @endforeach
+
+                @endsection @endforeach
         </div>
     </main>
     <!-- End of Main -->
 
-@endsection

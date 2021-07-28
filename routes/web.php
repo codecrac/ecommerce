@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AccueilController;
+use App\Http\Controllers\admin\AdminChatController;
 use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\ArticleController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\FrontArticleController;
 use App\Http\Controllers\FrontEvenementController;
@@ -41,6 +43,12 @@ Route::get('/articles/{id_article}', [FrontArticleController::class,'index'])->n
 Route::get('/ajouter_au_panier/{id_article}/{quantite}', [PanierController::class,'ajouter'])->name('ajouter_au_panier');
 Route::get('/voir_le_panier', [PanierController::class,'voir_panier'])->name('voir_le_panier');
 
+//CHAT
+Route::get('/chat', [ChatController::class,'chat'])->name('chat');
+Route::get('/envoyer_message', [ChatController::class,'envoyer_message'])->name('envoyer_message');
+Route::get('/load_conversation', [ChatController::class,'load_conversation'])->name('load_conversation');
+Route::get('/load_conversation_for_admin', [AdminChatController::class,'load_conversation_for_admin'])->name('load_conversation_for_admin');
+
 //=============================================ADMIN ROUTES
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $liste_menus_simple = Menu::where('type','=','menu_simple')->get();
@@ -62,6 +70,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function (){
+
+//=========================gestion chat
+    Route::get('/chat_admin', [AdminChatController::class,'chat_admin'])->name('chat_admin');
+
 
 //=========================gestion utilisateur
     Route::get('/gestion-utilisateur',[UtilisateurController::class,'index'])->name('gestion_utilisateur');

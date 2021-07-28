@@ -428,6 +428,8 @@
     <!-- End of Header -->
 {{--===============================  CONTENU  =================================================--}}
             @yield('body')
+
+{{--    //LIVE CHAT--}}
 {{--===============================  //CONTENU  =================================================--}}
 
 <!-- Start of Footer -->
@@ -1351,9 +1353,8 @@
 
 <!-- Main JS -->
 <script src="/front_template/js/main.min.js"></script>
+@yield('script_complementaire');
 </body>
-
-
 </html>
 
 
