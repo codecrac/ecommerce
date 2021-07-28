@@ -878,15 +878,16 @@
                                         <div class="product-form container">
                                             <div class="product-qty-form">
                                                 <div class="input-group">
-                                                    <input class="quantity form-control" id="quantite" type="number" min="1"
+                                                    <input class="quantity form-control" id="quantite_{{$larticle['id']}}" type="number" min="1"
                                                            max="10000000">
                                                     <button class="quantity-plus w-icon-plus"></button>
                                                     <button class="quantity-minus w-icon-minus"></button>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-primary btn-cart">
+{{--                                            <button class="btn btn-primary btn-cart">--}}
+                                            <button class="btn btn-primary">
                                                 <i class="w-icon-cart"></i>
-                                                <span>Ajouter au panier</span>
+                                                <a href="#" onclick="ajouter_au_panier({{$larticle['id']}})" style="color: #fff">Ajouter au panier</a>
                                             </button>
                                         </div>
                                     </div>
@@ -1930,6 +1931,28 @@
 
 <!-- Main JS File -->
 <script src="/front_template/js/main.min.js"></script>
+
+{{--============================AJOUTER AU PANIER==================================--}}
+<script>
+    function ajouter_au_panier(id){
+        let id_article = id;
+
+        let input_id = "#quantite_"+id;
+        let quantite = $(input_id).val();
+        alert(id_article);
+        alert(quantite);
+
+        $.ajax({
+            method : "GET",
+            url: "/ajouter_au_panier/"+id_article+"/"+quantite,
+            success : function (response){
+                alert (response);
+                $('.btn-cart').click();
+            }
+        })
+    }
+</script>
+
 </body>
 
 

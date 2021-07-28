@@ -8,6 +8,7 @@ use App\Http\Controllers\FrontArticleController;
 use App\Http\Controllers\FrontEvenementController;
 use App\Http\Controllers\InfoGeneraleController;
 use App\Http\Controllers\PageAccueilController;
+use App\Http\Controllers\PanierController;
 use App\Http\Controllers\PubliciteController;
 use App\Http\Controllers\UtilisateurController;
 use App\Models\Article;
@@ -36,7 +37,9 @@ Route::get('/page-article/{id_menu_simple}', [FrontArticleController::class,'pag
 Route::get('/evenement/{id_evenement}', [FrontEvenementController::class,'details_evenement'])->name('details_evenement');
 Route::get('/articles/{id_article}', [FrontArticleController::class,'index'])->name('lire_article');
 
-
+//panier
+Route::get('/ajouter_au_panier/{id_article}/{quantite}', [PanierController::class,'ajouter'])->name('ajouter_au_panier');
+Route::get('/voir_le_panier', [PanierController::class,'voir_panier'])->name('voir_le_panier');
 
 //=============================================ADMIN ROUTES
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
