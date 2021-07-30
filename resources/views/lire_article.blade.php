@@ -885,9 +885,9 @@
                                                 </div>
                                             </div>
 {{--                                            <button class="btn btn-primary btn-cart">--}}
-                                            <button class="btn btn-primary">
+                                            <button class="btn btn-primary btn-cart"  onclick="ajouter_au_panier({{$larticle['id']}})" >
                                                 <i class="w-icon-cart"></i>
-                                                <a href="#" onclick="ajouter_au_panier({{$larticle['id']}})" style="color: #fff">Ajouter au panier</a>
+                                                <a href="#"style="color: #fff">Ajouter au panier</a>
                                             </button>
                                         </div>
                                     </div>
@@ -1939,15 +1939,15 @@
 
         let input_id = "#quantite_"+id;
         let quantite = $(input_id).val();
-        alert(id_article);
-        alert(quantite);
+        // alert(id_article);
+        // alert(quantite);
 
         $.ajax({
             method : "GET",
             url: "/ajouter_au_panier/"+id_article+"/"+quantite,
             success : function (response){
                 alert (response);
-                $('.btn-cart').click();
+                // $('.btn-cart').click();
             }
         })
     }

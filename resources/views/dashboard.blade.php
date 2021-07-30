@@ -82,7 +82,7 @@
                                     <i class="mdi mdi-currency-usd widget-icon"></i>
                                 </div>
                                 <h5 class="text-muted fw-normal mt-0" title="Average Revenue">Commandes</h5>
-                                <h3 class="mt-3 mb-3">{{$nb_evenement}}</h3>
+                                <h3 class="mt-3 mb-3">{{$nb_commandes}}</h3>
                                 <p class="mb-0 text-muted">
                                     <span class="text-danger me-2"></span>
                                     <span class="text-nowrap"></span>
@@ -97,8 +97,8 @@
                                 <div class="float-end">
                                     <i class="mdi mdi-pulse widget-icon"></i>
                                 </div>
-                                <h5 class="text-muted fw-normal mt-0" title="Growth">Abonné.e.s</h5>
-                                <h3 class="mt-3 mb-3">{{$nb_publicite}}</h3>
+                                <h5 class="text-muted fw-normal mt-0" title="Growth">Client.e.s</h5>
+                                <h3 class="mt-3 mb-3">{{$nb_client}}</h3>
                                 <p class="mb-0 text-muted">
                                     <span class="text-success me-2"></span>
                                     <span class="text-nowrap"></span>

@@ -93,68 +93,51 @@
                         <div class="cart-overlay"></div>
                         <a href="#" class="cart-toggle label-down link">
                             <i class="w-icon-cart">
-                                <span class="cart-count">2</span>
+                                <span class="cart-count">{{sizeof($le_panier['contenu'])}}</span>
                             </i>
-                            <span class="cart-label">Cart</span>
+                            <span class="cart-label">Panier</span>
                         </a>
                         <div class="dropdown-box">
                             <div class="cart-header">
-                                <span>Shopping Cart</span>
-                                <a href="#" class="btn-close">Close<i class="w-icon-long-arrow-right"></i></a>
+                                <span>PANIER</span>
+                                <a href="#" class="btn-close">Fermer<i class="w-icon-long-arrow-right"></i></a>
                             </div>
 
                             <div class="products">
-                                <div class="product product-cart">
-                                    <div class="product-detail">
-                                        <a href="product-default.html" class="product-name">Beige knitted
-                                            elas<br>tic
-                                            runner shoes</a>
-                                        <div class="price-box">
-                                            <span class="product-quantity">1</span>
-                                            <span class="product-price">$25.68</span>
+                                @foreach($le_panier['contenu'] as $item_article)
+                                    <div class="product product-cart">
+                                        <div class="product-detail">
+                                            <a href="product-default.html" class="product-name">
+                                                {{$item_article['titre']}}
+                                            </a>
+                                            <div class="price-box">
+                                                <span class="product-quantity">{{$item_article['qte']}}</span>
+                                                <span class="product-price"> {{$item_article['prix']}} </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <figure class="product-media">
-                                        <a href="product-default.html">
-                                            <img src="/front_template/images/cart/product-1.jpg" alt="product" height="84"
-                                                 width="94" />
-                                        </a>
-                                    </figure>
-                                    <button class="btn btn-link btn-close">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
 
-                                <div class="product product-cart">
-                                    <div class="product-detail">
-                                        <a href="product-default.html" class="product-name">Blue utility
-                                            pina<br>fore
-                                            denim dress</a>
-                                        <div class="price-box">
-                                            <span class="product-quantity">1</span>
-                                            <span class="product-price">$32.99</span>
-                                        </div>
+                                        <figure class="product-media">
+                                            <a href="{{route('lire_article',[$item_article['id_article']])}}">
+                                                <img src="{{Storage::url($item_article['image'])}} " alt="product" height="84"
+                                                     width="94" />
+                                            </a>
+                                        </figure>
+                                      {{--  <button class="btn btn-link btn-close">
+                                            <i class="fas fa-times"></i>
+                                        </button>--}}
                                     </div>
-                                    <figure class="product-media">
-                                        <a href="product-default.html">
-                                            <img src="/front_template/images/cart/product-2.jpg" alt="product" width="84"
-                                                 height="94" />
-                                        </a>
-                                    </figure>
-                                    <button class="btn btn-link btn-close">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
+                                @endforeach
+
                             </div>
 
                             <div class="cart-total">
-                                <label>Subtotal:</label>
-                                <span class="price">$58.67</span>
+                                <label>Total:</label>
+                                <span class="price">{{$le_panier['grand_total']}} F</span>
                             </div>
 
                             <div class="cart-action">
-                                <a href="cart.html" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
-                                <a href="checkout.html" class="btn btn-primary  btn-rounded">Checkout</a>
+                                <a href="{{route('voir_le_panier')}}" class="btn btn-dark btn-outline btn-rounded">Voir Panier</a>
+                                <a href="{{route('voir_le_panier')}}" class="btn btn-primary  btn-rounded">Finaliser</a>
                             </div>
                         </div>
                         <!-- End of Dropdown Box -->

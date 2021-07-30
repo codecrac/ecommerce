@@ -17,6 +17,9 @@ class AccueilController extends Controller
 
 
     public function index(){
+
+//        request()->session()->forget('panier');
+
         $infos_generales = InfosGenerale::first();
         $menus_pricipaux = Menu::where('id_parent','=',null)->get();
 
@@ -28,9 +31,9 @@ class AccueilController extends Controller
         Session::put('panier', $this->le_panier);
         Session::save();
         $this->le_panier = Session::get('panier');
+        $le_panier = $this->le_panier;
 
-
-        return view('welcome',compact('infos_generales','menus_pricipaux','menu_present_sur_accueil'));
+        return view('welcome',compact('infos_generales','menus_pricipaux','menu_present_sur_accueil','le_panier'));
     }
 
     public function apropos()

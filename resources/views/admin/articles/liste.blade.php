@@ -32,7 +32,6 @@
 {{--                                    <td><img src="data:image/jpeg;base64,{{$item_article['image']}}" width="50px" height="50px" /></td>--}}
                                     <td><img src="{{Storage::url($item_article['image'])}}" width="50px" height="50px" /></td>
                                     <td>{{$item_article['titre']}}</td>
-                                    <td> <i class="mdi mdi-eye"></i>  {{$item_article['nb_vue']}} </td>
                                     <td>
                                         @if( $item_article['prix_promo'] !=null && !empty($item_article['prix_promo']) )
                                             <strike > {{$item_article['prix']}} </strike>

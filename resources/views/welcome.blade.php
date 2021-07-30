@@ -946,19 +946,19 @@
                                         <a href="{{route('lire_article',[$item_article['id']])}}">
                                             <img src="{{Storage::url($item_article['image'])}}" alt="Product" width="600"
                                                  height="675" />
-                                        </a>{{--
+                                        </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
+                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart" onclick="ajouter_au_panier({{$item_article['id']}})"></a>
+                                           {{-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
                                             <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
-                                               title="Quick View"></a>
-                                        </div>--}}
+                                               title="Quick View"></a>--}}
+                                        </div>
                                     </figure>
                                     <div class="product-details">
                                         <h3 class="product-name">
-                                            <a href="{{route('lire_article',[$item_article['id']])}}"> {{$item_article['titre']}} </a>
+                                            <a class="product-title" href="{{route('lire_article',[$item_article['id']])}}"> {{$item_article['titre']}} </a>
                                         </h3>
                                         <div class="product-price">
                                             @if( $item_article['prix_promo'] !=null &&  !empty($item_article['prix']) )
@@ -978,9 +978,25 @@
                     <div class="grid-space col-xl-5col col-1"></div>
                 </div>
                 <!-- End of Grid -->
-
-                @endsection @endforeach
+                @endforeach
         </div>
     </main>
     <!-- End of Main -->
+    <script>
+        function ajouter_au_panier(id){
+            let id_article = id;
 
+            let quantite = 1;
+
+            $.ajax({
+                method : "GET",
+                url: "/ajouter_au_panier/"+id_article+"/"+quantite,
+                success : function (response){
+                    // alert (response);
+                    // $('.btn-cart').click();
+                }
+            })
+        }
+    </script>
+
+@endsection

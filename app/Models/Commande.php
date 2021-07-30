@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
+
+    public function client(){
+        return $this->belongsTo(Client::class,'id_client');
+    }
 }

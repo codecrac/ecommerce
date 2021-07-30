@@ -10,7 +10,7 @@
     <meta content="administration du site de l'organisation {{$infos_generales['organisation']}}" name="description" />
     <meta content="yves Ladde | Straton System" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="data:image/png;base64,{{$infos_generales['logo']}}">
+    <link rel="shortcut icon" href="{{Storage::url($infos_generales['logo'])}}">
 
     <!-- third party css -->
     <link href="{{asset('assets/css/vendor/jquery-jvectormap-1.2.2.css')}}" rel="stylesheet" type="text/css" />
@@ -30,6 +30,7 @@
         }
     </style>
 
+    @yield('style_complementaire')
 </head>
 
 <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
@@ -108,20 +109,20 @@
                 </li>
                 @endif
 
-                @if( Auth::user()->publicite =='true' )
+{{--                @if( Auth::user()->publicite =='true' )--}}
                     <li class="side-nav-item">
-                        <a href="{{route('gestion_publicite')}}" class="side-nav-link">
+                        <a href="{{route('gestion_commande')}}" class="side-nav-link">
                             <i class="uil-cell"></i>
                             <span> Commandes </span>
                         </a>
                     </li>
-                @endif
+{{--                @endif--}}
 
                 @if( Auth::user()->evenement =='true' )
                     <li class="side-nav-item">
-                        <a href="{{route('gestion_evenement')}}" class="side-nav-link">
+                        <a href="{{route('newsletter')}}" class="side-nav-link">
                             <i class="uil-calendar-alt"></i>
-                            <span> Abonné.e.s </span>
+                            <span> Newsletter </span>
                         </a>
                     </li>
                 @endif
@@ -187,11 +188,12 @@
                         <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                            aria-expanded="false">
                             <span class="account-user-avatar">
-                                        <img src="data:image/png;base64,{{$infos_generales['logo']}}" alt="user-image" class="rounded-circle">
+                                        <img src="{{Storage::url($infos_generales['logo'])}}" alt="user-image" class="rounded-circle">
                                     </span>
                             <span>
+                                <br/>
                                 <span class="account-user-name">{{Auth::user()->name}}</span>
-                                <span class="account-position">Super Admin</span>
+{{--                                <span class="account-position">Super Admin</span>--}}
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -291,6 +293,7 @@
     });
 </script>
 @yield('script_complementaire')
+
 </body>
 
 <!-- Mirrored from coderthemes.com/hyper/saas/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 22 Jul 2021 00:21:13 GMT -->
