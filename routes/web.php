@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Route;
 //=============================================FRONT ROUTES
 Route::get('/', [AccueilController::class,'index'])->name('accueil');
 Route::get('/apropos', [AccueilController::class,'apropos'])->name('apropos');
-Route::get('/resultats-de-recherche', [FrontArticleController::class,'resultat_recherche'])->name('resultat_recherche');
+Route::post('/resultats-de-recherche', [FrontArticleController::class,'resultat_recherche'])->name('resultat_recherche');
 Route::get('/boutique/{id_menu_simple}', [BoutiqueController::class,'index'])->name('boutique');
 /*Route::get('/page-article/{id_menu_simple}', [FrontArticleController::class,'page_article'])->name('page_article');
 Route::get('/evenement/{id_evenement}', [FrontEvenementController::class,'details_evenement'])->name('details_evenement');*/

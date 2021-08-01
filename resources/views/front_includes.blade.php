@@ -51,17 +51,20 @@
                     <a href="{{route('accueil')}}" class="logo ml-lg-0">
                         <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo" width="144" height="45" />
                     </a>
-                    <form method="get" action="{{route('resultat_recherche')}}" class="input-wrapper header-search hs-expanded hs-round d-none d-md-flex">
+                    <form method="post" action="{{route('resultat_recherche')}}" class="input-wrapper header-search hs-expanded hs-round d-none d-md-flex">
                         <div class="select-box">
-                            <select id="category" name="id_categorie">
+                            <select id="category" name="id_categorie" required>
+                                <option value>Choisissez</option>
+                                <option value="-1">Suivre commande</option>
                                 <option value="0">Toutes Categories</option>
                                 @foreach($liste_categories as $item_categorie)
                                     <option value="{{$item_categorie['id']}}">{{$item_categorie['titre']}}</option>
                                 @endforeach
                             </select>
                         </div>
+                        @csrf
                         <input type="text" class="form-control" name="mot_cle" id="search"
-                               placeholder="Rechercher dans la categorie..." required />
+                               placeholder="Suivre commande ou Rechercher dans la categorie..." required />
                         <button class="btn btn-search" type="submit"><i class="w-icon-search"></i>
                         </button>
                     </form>

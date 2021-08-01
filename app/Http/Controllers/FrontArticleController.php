@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Commande;
 use App\Models\Evenement;
 use App\Models\InfosGenerale;
 use App\Models\Menu;
@@ -72,6 +73,10 @@ class FrontArticleController extends Controller
                 ->orWHere('extrait','LIKE','%'.$mot_cle.'%')
                 ->orWhere('contenu','LIKE','%'.$mot_cle.'%')
                 ->get();
+        }else if($id_menu == '-1'){
+            $mot_cle = str_replace('#','',$mot_cle);
+            $resultat_commande = Commande::where('id','=',$mot_cle)->first();
+            dd($resultat_commande);
         }else{
             $resultat_article = Article::where('id_menu','=',$id_menu)
                 ->where('titre','LIKE','%'.$mot_cle.'%')
