@@ -43,7 +43,7 @@
                                         ( {{$mis_en_avant_deux['reduction']}}% )
                                     @endif
                             </h3>
-                            <a href="demo9-shop.html" class="btn btn-white btn-link btn-underline btn-icon-right">
+                            <a href="{{route('boutique',[$mis_en_avant_deux['id']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
                                 Acheter maintenant<i class="w-icon-long-arrow-right"></i>
                             </a>
                         </div>
@@ -64,7 +64,7 @@
                                 </div>
                             @endif
 
-                            <a href="demo9-shop.html" class="btn btn-white btn-link btn-underline"> Decouvrir la Collection</a>
+                            <a href="{{route('boutique',[$mis_en_avant_trois['id']])}}" class="btn btn-white btn-link btn-underline"> Decouvrir la Collection</a>
                         </div>
                     </div>
                 </div>
@@ -76,13 +76,13 @@
                                  height="215" style="background-color: #A3A8A6;" />
                         </figure>
                         <div class="banner-content" style="background-color: #28292daa;padding:4%;border-radius: 5px">
-                            @if($mis_en_avant_deux['etat_promotion'] =='true' )
+                            @if($mis_en_avant_quatre['etat_promotion'] =='true' )
                                 <h5 class="banner-subtitle text-uppercase font-weight-bold">
-                                    {{$mis_en_avant_deux['reduction']}}% de reduction
+                                    {{$mis_en_avant_quatre['reduction']}}% de reduction
                                 </h5>
                             @endif
                             <h3 class="banner-title text-capitalize ls-25 text-white"> {{$mis_en_avant_quatre['titre']}} </h3>
-                            <a href="#" class="btn btn-white btn-link btn-underline btn-icon-right">
+                            <a href="{{route('boutique',[$mis_en_avant_quatre['id']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
                                 Voir les articles <i class="w-icon-long-arrow-right"></i>
                             </a>
                         </div>
