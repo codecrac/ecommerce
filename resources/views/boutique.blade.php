@@ -109,8 +109,10 @@
                         </nav>
 
 
-                        <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
-                            @foreach($la_categorie->articles as $item_article)
+
+                            @if(sizeof($la_categorie->articles) >0)
+                                <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
+                                    @foreach($la_categorie->articles as $item_article)
                                 <div class="product-wrap">
                                 <div class="product text-center">
                                     <figure class="product-media">
@@ -133,23 +135,22 @@
                                         <div class="product-pa-wrapper">
                                             <div class="product-price">
 
-                                                 @if( $item_article['prix_promo'] !=null &&  !empty($item_article['prix']) )
-
+                                             @if( $item_article['prix_promo'] !=null &&  !empty($item_article['prix_promo']) )
 
                                                   @if($la_categorie->etat_promotion =='false')
-                                                      <ins class="new-price"> {{number_format($item_article['prix_promo'],0,'',' ' )}} F </ins>
-                                                  @else
-                                                      <ins class="new-price"> {{number_format( round($item_article['prix_promo']  - ($item_article['prix_promo'] * $la_categorie->reduction/100) ),0,'',' ') }} F </ins>
-                                                  @endif
+                                                          <ins class="new-price"> {{number_format($item_article['prix_promo'],0,'',' ' )}} F </ins>
+                                                      @else
+                                                          <ins class="new-price"> {{number_format( round($item_article['prix_promo']  - ($item_article['prix_promo'] * $la_categorie->reduction/100) ),0,'',' ') }} F </ins>
+                                                      @endif
 
-                                                  <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' )}} F </del>
-                                              @else
-                                                  @if($la_categorie->etat_promotion =='false')
-                                                      <ins class="new-price"> {{number_format( $item_article['prix'],0,'',' ' )}} F </ins>
+                                                      <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' )}} F </del>
                                                   @else
-                                                      <ins class="new-price"> {{ number_format( round( $item_article['prix']  - ($item_article['prix'] * $la_categorie->reduction/100) ),0,'',' ') }} F </ins>
+                                                      @if($la_categorie->etat_promotion =='false')
+                                                          <ins class="new-price"> {{number_format( $item_article['prix'],0,'',' ' )}} F </ins>
+                                                      @else
+                                                          <ins class="new-price"> {{ number_format( round( $item_article['prix']  - ($item_article['prix'] * $la_categorie->reduction/100) ),0,'',' ') }} F </ins>
 
-                                                      <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' ) }} F </del>
+                                                          <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' ) }} F </del>
                                                   @endif
 
                                               @endif
@@ -159,8 +160,11 @@
                                 </div>
                             </div>
                             @endforeach
+                                </div>
+                            @else
+                                <h6 class="text-center">Aucun article dans cette categorie pour le moment, <a href="{{route('accueil')}}"> retour a l'accueil </a> </h6>
+                            @endif
                         </div>
-                    </div>
                     <!-- End of Shop Main Content -->
                 </div>
                 <!-- End of Shop Content -->

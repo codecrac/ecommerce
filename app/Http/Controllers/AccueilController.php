@@ -42,10 +42,12 @@ class AccueilController extends Controller
         $le_panier = $this->le_panier;
 
         $liste_categories = Menu::where('type','=','menu_simple')->get();
+        $huit_au_hasard = Article::inRandomOrder()->limit(8)->get();
 
         return view('welcome',compact('infos_generales',
             'liste_categories','menus_principaux','menu_present_sur_accueil','le_panier',
-                'mis_en_avant_un','mis_en_avant_deux','mis_en_avant_trois','mis_en_avant_quatre'
+                'mis_en_avant_un','mis_en_avant_deux','mis_en_avant_trois','mis_en_avant_quatre',
+                'huit_au_hasard'
         ));
     }
 

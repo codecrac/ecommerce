@@ -868,7 +868,7 @@
                                     <hr class="product-divider">
 
                                     <div class="product-price">
-                                        @if( $larticle['prix_promo'] !=null &&  !empty($larticle['prix']) )
+                                        @if( $larticle['prix_promo'] !=null &&  !empty($larticle['prix_promo']) )
 
                                             @if($larticle->categorie_parente->etat_promotion =='false')
                                                 <ins class="new-price"> {{number_format($larticle['prix_promo'],0,'',' ' )}} F </ins>

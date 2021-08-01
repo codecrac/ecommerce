@@ -134,7 +134,7 @@
 
         <div class="header-bottom sticky-content fix-top sticky-header">
             <div class="container">
-                <div class="inner-wrap" style="padding: 5px">
+                <div class="inner-wrap" style="padding: 9px">
                     <div class="header-left">
                         <nav class="main-nav ml-0">
 
@@ -147,7 +147,7 @@
                                         <a href="#">{{$item_categorie_parente['titre']}}</a>
                                         <ul>
                                             @foreach($item_categorie_parente->enfants as $item_ctegorie)
-                                                <li><a href="#{{$item_ctegorie['id']}}">{{$item_ctegorie['titre']}}</a></li>
+                                                <li><a href="{{route('boutique',[$item_ctegorie['id']])}}">{{$item_ctegorie['titre']}}</a></li>
                                             @endforeach
                                         </ul>
                                     </li>
@@ -157,7 +157,7 @@
                         </nav>
                     </div>
                     <div class="header-right">
-                        <a href="#" class="d-xl-show"> Toutes les categories</a>
+                        <a href="{{route('boutique',[$item_ctegorie['id']])}}" class="d-xl-show"> Toutes les categories</a>
 {{--                        <a href="#"><i class="w-icon-sale"></i>Daily Deals</a>--}}
                     </div>
                 </div>

@@ -19,6 +19,7 @@ class PageAccueilController extends Controller
         $mis_en_avant_trois = Menu::where('mis_en_evidence','=','3')->first();
         $mis_en_avant_quatre = Menu::where('mis_en_evidence','=','4')->first();
 
+
         return view('admin.page_accueil',compact('menus_pricipaux',
                                                     'liste_menus_simple',
                                                                 'infos_generales',
