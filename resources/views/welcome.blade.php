@@ -23,7 +23,7 @@
                                 </h5>
                             @endif
                             <br/>
-                            <a href="demo9-shop.html" class="btn btn-white btn-outline btn-rounded btn-icon-right">
+                            <a href="{{route('boutique',[$mis_en_avant_un['id']])}}" class="btn btn-white btn-outline btn-rounded btn-icon-right">
                                 Decouvrir<i class="w-icon-long-arrow-right"></i>
                             </a>
                         </div>
@@ -944,12 +944,13 @@
 
 {{--        Categorie presente sur accueil--}}
         <div class="container">
-            @foreach($menus_pricipaux as $item_menu_parent)
+            @foreach($menu_present_sur_accueil as $item_menu_parent)
                 <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
                     <h2 class="title"> {{$item_menu_parent['titre']}} </h2>
 
                         <ul class="nav-filters" data-target="#products-{{$item_menu_parent['id']}}">
-                            <li><a href="#" class="nav-filter active" data-filter="*"> Tous </a></li>
+                            <li><a href="#" class="nav-filter " data-filter="*"> Tous </a></li>
+                            @php $i=0; @endphp
                             @foreach($item_menu_parent->enfants as $item_categorie)
                                 <li>
                                     <a href="#" class="nav-filter" data-filter=".1-{{$item_categorie['id']}}">
@@ -959,6 +960,7 @@
                                         @endif
                                     </a>
                                 </li>
+                                @if($i++ ==5 ) @break  @endif
                             @endforeach
                         </ul>
                 </div>
@@ -1026,13 +1028,16 @@
     <script>
         function ajouter_au_panier(id){
             let id_article = id;
-
             let quantite = 1;
 
             $.ajax({
                 method : "GET",
                 url: "/ajouter_au_panier/"+id_article+"/"+quantite,
                 success : function (response){
+
+                    let taille_panier = $('#taille_panier').text();
+                    let nv_taille = taille_panier*1 + 1;
+                    $('#taille_panier').text(nv_taille);
                     // alert (response);
                     // $('.btn-cart').click();
                 }

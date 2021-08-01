@@ -109,11 +109,11 @@
                     </div>
                     <div class="card-body">
                         <form method="post" action="{{route('enregistrer_page_accueil')}}">
-                            @foreach($liste_menus_simple as $item_sous_menu)
+                            @foreach($menus_pricipaux as $item)
 
                                 <div>
-                                    <input name="present[]" id="{{$item_sous_menu['id']}}" value="{{$item_sous_menu['id']}}" type="checkbox" {{$item_sous_menu['present_sur_accueil'] ? 'checked' : ''  }} >
-                                    &nbsp; <label for="{{$item_sous_menu['id']}}">{{$item_sous_menu['titre']}}</label>
+                                    <input name="present[]" id="{{$item['id']}}" value="{{$item['id']}}" type="checkbox" {{$item['present_sur_accueil'] ? 'checked' : ''  }} >
+                                    &nbsp; <label for="{{$item['id']}}">{{$item['titre']}}</label>
                                 </div>
 
                             @endforeach

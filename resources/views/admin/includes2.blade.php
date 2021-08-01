@@ -143,7 +143,7 @@
                     </a>
                 </li>
 
-                <li class="side-nav-title side-nav-item mt-1">Section Administration</li>
+{{--                <li class="side-nav-title side-nav-item mt-1">Section Administration</li>--}}
 
 
                 @if( Auth::user()->creer_utilisateurs =='true' )

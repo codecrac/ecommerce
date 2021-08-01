@@ -132,7 +132,9 @@ class PanierController extends Controller
 
 
         $infos_generales = InfosGenerale::first();
-        $menus_pricipaux = Menu::where('id_parent','=',null)->get();
+        $menus_principaux = Menu::where('id_parent','=',null)->get();
+        $liste_categories = Menu::where('type','=','menu_simple')->get();
+
 
         $le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
         Session::put('panier', $le_panier);
@@ -142,7 +144,7 @@ class PanierController extends Controller
 
 //        dd($le_panier);
 
-        return view('panier',compact('infos_generales', 'menus_pricipaux','le_panier') );
+        return view('panier',compact('infos_generales', 'menus_principaux','le_panier','liste_categories') );
     }
 
     public function enregistrer_commande(Request $request){

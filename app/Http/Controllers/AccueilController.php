@@ -21,10 +21,10 @@ class AccueilController extends Controller
 //        request()->session()->forget('panier');
 
         $infos_generales = InfosGenerale::first();
-        $menus_pricipaux = Menu::where('id_parent','=',null)->take(5)->get();
+        $menus_principaux = Menu::where('id_parent','=',null)->take(5)->get();
 
         //present sur l'acceuil
-        $menu_present_sur_accueil = Menu::where('type','=','menu_simple')->where('present_sur_accueil','=',true)->get();
+        $menu_present_sur_accueil = Menu::where('type','=','parent')->where('present_sur_accueil','=',true)->get();
 
         //Categorie parente en evidence
 
@@ -44,7 +44,7 @@ class AccueilController extends Controller
         $liste_categories = Menu::where('type','=','menu_simple')->get();
 
         return view('welcome',compact('infos_generales',
-            'liste_categories','menus_pricipaux','menu_present_sur_accueil','le_panier',
+            'liste_categories','menus_principaux','menu_present_sur_accueil','le_panier',
                 'mis_en_avant_un','mis_en_avant_deux','mis_en_avant_trois','mis_en_avant_quatre'
         ));
     }
@@ -52,7 +52,7 @@ class AccueilController extends Controller
     public function apropos()
     {
         $infos_generales = InfosGenerale::first();
-        $menus_pricipaux = Menu::where('id_parent','=',null)->get();
+        $menus_principaux = Menu::where('id_parent','=',null)->get();
 
         $cinq_au_hasard = Article::inRandomOrder()->limit(3)->get();
         $trois_de_la_meme_categorie = Article::orderBy('id','desc')->take(3)->get();
@@ -64,7 +64,7 @@ class AccueilController extends Controller
 //        dd($pub_1,$pub_2,$pub_3);
 
         return view('apropos',compact('infos_generales',
-                'menus_pricipaux','cinq_au_hasard','trois_de_la_meme_categorie',
+                'menus_principaux','cinq_au_hasard','trois_de_la_meme_categorie',
                 'pub_1','pub_2','pub_3')
         );
     }

@@ -4,6 +4,7 @@ use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\admin\AdminChatController;
 use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\ArticleController;
+use App\Http\Controllers\BoutiqueController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FrontArticleController;
@@ -36,8 +37,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AccueilController::class,'index'])->name('accueil');
 Route::get('/apropos', [AccueilController::class,'apropos'])->name('apropos');
 Route::get('/resultats-de-recherche', [FrontArticleController::class,'resultat_recherche'])->name('resultat_recherche');
-Route::get('/page-article/{id_menu_simple}', [FrontArticleController::class,'page_article'])->name('page_article');
-Route::get('/evenement/{id_evenement}', [FrontEvenementController::class,'details_evenement'])->name('details_evenement');
+Route::get('/boutique/{id_menu_simple}', [BoutiqueController::class,'index'])->name('boutique');
+/*Route::get('/page-article/{id_menu_simple}', [FrontArticleController::class,'page_article'])->name('page_article');
+Route::get('/evenement/{id_evenement}', [FrontEvenementController::class,'details_evenement'])->name('details_evenement');*/
 Route::get('/articles/{id_article}', [FrontArticleController::class,'index'])->name('lire_article');
 
 //panier

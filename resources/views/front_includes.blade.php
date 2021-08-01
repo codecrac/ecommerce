@@ -48,7 +48,7 @@
                 <div class="header-left mr-md-4">
                     <a href="#" class="mobile-menu-toggle  w-icon-hamburger">
                     </a>
-                    <a href="demo9.html" class="logo ml-lg-0">
+                    <a href="{{route('accueil')}}" class="logo ml-lg-0">
                         <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo" width="144" height="45" />
                     </a>
                     <form method="get" action="#" class="input-wrapper header-search hs-expanded hs-round d-none d-md-flex">
@@ -81,7 +81,7 @@
                         <div class="cart-overlay"></div>
                         <a href="#" class="cart-toggle label-down link">
                             <i class="w-icon-cart">
-                                <span class="cart-count">{{sizeof($le_panier['contenu'])}}</span>
+                                <span class="cart-count" id="taille_panier">{{sizeof($le_panier['contenu'])}}</span>
                             </i>
                             <span class="cart-label">Panier</span>
                         </a>
@@ -110,9 +110,6 @@
                                                      width="94" />
                                             </a>
                                         </figure>
-                                      {{--  <button class="btn btn-link btn-close">
-                                            <i class="fas fa-times"></i>
-                                        </button>--}}
                                     </div>
                                 @endforeach
 
@@ -145,7 +142,7 @@
                                 <li class="active">
                                     <a href="{{route('accueil')}}">Accueil</a>
                                 </li>
-                                @foreach($menus_pricipaux as $item_categorie_parente)
+                                @foreach($menus_principaux as $item_categorie_parente)
                                     <li>
                                         <a href="#">{{$item_categorie_parente['titre']}}</a>
                                         <ul>
