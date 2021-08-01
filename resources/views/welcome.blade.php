@@ -101,64 +101,47 @@
                                 'dots': false,
                                 'margin': 20
                             }">
-                            <div class="product text-center">
+                            @foreach($avec_promo as $item_avec_promo)
+                                <div class="product text-center">
                                 <figure class="product-media">
-                                    <a href="product-default.html">
-                                        <img src="/front_template/images/demos/demo9/product/5-1-1.jpg" alt="Product"
+                                    <a href="{{route('boutique',[$item_avec_promo['id']])}}">
+                                        <img src="{{Storage::url($item_avec_promo['image'])}}" alt="Product"
                                              width="800" height="900" />
-                                        <img src="/front_template/images/demos/demo9/product/5-1-2.jpg" alt="Product"
+                                        <img src="{{Storage::url($item_avec_promo['image'])}}" alt="Product"
                                              width="800" height="900" />
                                     </a>
                                     <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"
-                                           title="Add to cart"></a>
-                                        <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                           title="Wishlist"></a>
-                                        <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                           title="Compare"></a>
-                                        <a href="#" class="btn-product-icon btn-quickview w-icon-search"
-                                           title="Quick View"></a>
+                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"  onclick="ajouter_au_panier({{$item_avec_promo['id']}})"
+                                           title="Ajouter au panier"></a>
                                     </div>
                                 </figure>
                                 <div class="product-details">
                                     <h3 class="product-name">
-                                        <a href="product-default.html">Mobile Electronic Recorder</a>
+                                        <a class="product-title" href="{{route('boutique',[$item_avec_promo['id']])}}">{{$item_avec_promo['titre']}}</a>
                                     </h3>
                                     <div class="product-price">
-                                        <ins class="new-price">$95.72</ins><del class="old-price">$97.15</del>
+
+                                        @if( $item_avec_promo['prix_promo'] !=null &&  !empty($item_avec_promo['prix_promo']) )
+
+                                            @if($item_avec_promo->categorie_parente->etat_promotion =='false')
+                                                <ins class="new-price"> {{number_format($item_avec_promo['prix_promo'],0,'',' ' )}} F </ins>
+                                            @else
+                                                <ins class="new-price"> {{number_format( round($item_avec_promo['prix_promo']  - ($item_avec_promo['prix_promo'] * $item_avec_promo->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
+                                            @endif
+                                            <del class="old-price">  {{number_format($item_avec_promo['prix'],0,'',' ' )}} F </del>
+                                        @else
+                                            @if($item_avec_promo->categorie_parente->etat_promotion =='false')
+                                                <ins class="new-price"> {{number_format( $item_avec_promo['prix'],0,'',' ' )}} F </ins>
+                                            @else
+                                                <ins class="new-price"> {{ number_format( round( $item_avec_promo['prix']  - ($item_avec_promo['prix'] * $item_avec_promo->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
+
+                                                <del class="old-price">  {{number_format($item_avec_promo['prix'],0,'',' ' ) }} F </del>
+                                            @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                            <!-- End of Product -->
-                            <div class="product text-center">
-                                <figure class="product-media">
-                                    <a href="product-default.html">
-                                        <img src="/front_template/images/demos/demo9/product/5-2-1.jpg" alt="Product"
-                                             width="800" height="900" />
-                                        <img src="/front_template/images/demos/demo9/product/5-2-2.jpg" alt="Product"
-                                             width="800" height="900" />
-                                    </a>
-                                    <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"
-                                           title="Add to cart"></a>
-                                        <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                           title="Wishlist"></a>
-                                        <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                           title="Compare"></a>
-                                        <a href="#" class="btn-product-icon btn-quickview w-icon-search"
-                                           title="Quick View"></a>
-                                    </div>
-                                </figure>
-                                <div class="product-details">
-                                    <h3 class="product-name">
-                                        <a href="product-default.html">USB Charger</a>
-                                    </h3>
-                                    <div class="product-price">
-                                        <ins class="new-price">$129.62</ins><del class="old-price">$133.36</del>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End of Product -->
+                            @endforeach
                         </div>
                         <!-- End of Owl Carousel -->
                         <div class="product-countdown-container">
@@ -219,7 +202,7 @@
                                                 </a>
                                                 <div class="product-action-vertical">
                                                     <a href="#" class="btn-product-icon btn-cart w-icon-cart"
-                                                       title="Add to cart"></a>
+                                                       title="Ajouter au panier"></a>
                                                 </div>
                                             </figure>
                                             <div class="product-details">
@@ -227,7 +210,7 @@
                                                     <a href="{{route('lire_article',[$item_huit['id']])}}">{{$item_huit['titre']}}</a>
                                                 </h3>
                                                 <div class="product-price">
-                                                    <ins class="new-price">$10.73</ins>
+{{--                                                    <ins class="new-price">$10.73</ins>--}}
 
                                                     @if( $item_huit['prix_promo'] !=null &&  !empty($item_huit['prix_promo']) )
 
@@ -304,7 +287,7 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart" onclick="ajouter_au_panier({{$item_article['id']}})"></a>
+                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Ajouter au panier" onclick="ajouter_au_panier({{$item_article['id']}})"></a>
                                            {{-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
                                             <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
