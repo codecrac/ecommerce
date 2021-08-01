@@ -49,6 +49,7 @@ class AccueilController extends Controller
         }
 
         $huit_au_hasard = Article::inRandomOrder()->limit(8)->get();
+//        dd($huit_au_hasard);
 
         return view('welcome',compact('infos_generales',
             'liste_categories','menus_principaux','menu_present_sur_accueil','le_panier',

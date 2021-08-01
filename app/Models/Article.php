@@ -16,4 +16,8 @@ class Article extends Model
     public function auteur(){
         return $this->belongsTo(User::class,'id_auteur');
     }
+
+    public function photos_en_plus(){
+        return $this->hasMany(Gallerie::class,'id_article');
+    }
 }

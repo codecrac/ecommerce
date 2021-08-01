@@ -34,6 +34,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group col-12">
+                            <div class="row">
+                                <h4>Autre image</h4>
+                                <input type="file" multiple name="gallerie[]" class="form-control" required />
+                            </div>
+                        </div>
+
                         <div class="form-group col-12 pt-3">
                             <div class="row">
                                 <h4>Titre</h4>

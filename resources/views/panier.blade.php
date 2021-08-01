@@ -43,14 +43,15 @@
                                                         <a href="{{route('retirer_du_panier',[$i++])}}" class="btn btn-close"><i class="fas fa-times"></i></a>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <a href="product-default.html">
+                                                        <a href="#">
                                                             <figure>
                                                                 <img src="{{Storage::url($item_article['image'])}}" alt="product" width="80" height="80">
                                                             </figure>
                                                         </a>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <h3 class="text-capitalize">{{$item_article['titre']}}</h3>
+                                                        <br/>
+                                                        <span class="amount">{{$item_article['titre']}}</span>
                                                     </div>
                                                 </div>
                                             </td>

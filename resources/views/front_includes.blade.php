@@ -51,16 +51,16 @@
                     <a href="{{route('accueil')}}" class="logo ml-lg-0">
                         <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo" width="144" height="45" />
                     </a>
-                    <form method="get" action="#" class="input-wrapper header-search hs-expanded hs-round d-none d-md-flex">
+                    <form method="get" action="{{route('resultat_recherche')}}" class="input-wrapper header-search hs-expanded hs-round d-none d-md-flex">
                         <div class="select-box">
-                            <select id="category" name="category">
-                                <option value="">Toutes Categories</option>
+                            <select id="category" name="id_categorie">
+                                <option value="0">Toutes Categories</option>
                                 @foreach($liste_categories as $item_categorie)
                                     <option value="{{$item_categorie['id']}}">{{$item_categorie['titre']}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <input type="text" class="form-control" name="search" id="search"
+                        <input type="text" class="form-control" name="mot_cle" id="search"
                                placeholder="Rechercher dans la categorie..." required />
                         <button class="btn btn-search" type="submit"><i class="w-icon-search"></i>
                         </button>
@@ -144,7 +144,7 @@
                                 </li>
                                 @foreach($menus_principaux as $item_categorie_parente)
                                     <li>
-                                        <a href="#">{{$item_categorie_parente['titre']}}</a>
+                                        <a href="{{route('boutique',[$item_categorie_parente['id']])}}">{{$item_categorie_parente['titre']}}</a>
                                         <ul>
                                             @foreach($item_categorie_parente->enfants as $item_ctegorie)
                                                 <li><a href="{{route('boutique',[$item_ctegorie['id']])}}">{{$item_ctegorie['titre']}}</a></li>
@@ -157,7 +157,7 @@
                         </nav>
                     </div>
                     <div class="header-right">
-                        <a href="{{route('boutique',[$item_ctegorie['id']])}}" class="d-xl-show"> Toutes les categories</a>
+                        <a href="{{route('boutique',[$item_ctegorie['id']])}}" class="d-xl-show"> Toutes categories</a>
 {{--                        <a href="#"><i class="w-icon-sale"></i>Daily Deals</a>--}}
                     </div>
                 </div>

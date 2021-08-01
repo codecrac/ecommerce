@@ -24,7 +24,7 @@ class BoutiqueController extends Controller
             if(sizeof($la_categorie->enfants) >0){
                 $la_categorie = $la_categorie->enfants;
                 $la_categorie = $la_categorie[0];
-                dd($la_categorie);
+//                dd($la_categorie);
             }else{
                 $la_categorie = Menu::where('type','=','menu_simple')->first();
             }

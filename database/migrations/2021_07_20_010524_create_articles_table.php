@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->string('extrait');
             $table->longText('contenu');
             $table->string('prix');
+            $table->string('slug')->unique()->nullable();
             $table->string('prix_promo')->nullable();
             $table->timestamps();
         });

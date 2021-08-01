@@ -132,7 +132,7 @@ class PanierController extends Controller
 
 
         $infos_generales = InfosGenerale::first();
-        $menus_principaux = Menu::where('id_parent','=',null)->get();
+        $menus_principaux = Menu::where('id_parent','=',null)->take(5)->get();
         $liste_categories = Menu::where('type','=','menu_simple')->get();
 
 

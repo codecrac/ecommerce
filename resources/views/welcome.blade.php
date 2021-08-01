@@ -104,7 +104,7 @@
                             @foreach($avec_promo as $item_avec_promo)
                                 <div class="product text-center">
                                 <figure class="product-media">
-                                    <a href="{{route('boutique',[$item_avec_promo['id']])}}">
+                                    <a href="{{route('lire_article',[$item_avec_promo['slug']])}}">
                                         <img src="{{Storage::url($item_avec_promo['image'])}}" alt="Product"
                                              width="800" height="900" />
                                         <img src="{{Storage::url($item_avec_promo['image'])}}" alt="Product"
@@ -189,53 +189,54 @@
                         <!-- End of Tab Pane -->
                         <div class="tab-pane active" id="tab-2">
                             <div class="owl-carousel owl-theme row cols-xl-4 cols-lg-3 cols-md-2" data-owl-options="">
-                                @php $i=0; @endphp
-                                @foreach($huit_au_hasard as $item_huit)
-                                    @if($i%2==0)
-                                      <div class="product-col">
-                                    @endif
+                                <div class="product-col">
+                                    @php $i=0; @endphp
+                                    @foreach($huit_au_hasard as $item_huit)
+                                        @php $i++; @endphp
                                         <div class="product text-center">
-                                            <figure class="product-media">
-                                                <a href="product-default.html">
-                                                    <img src="{{Storage::url($item_huit['image'])}}" alt="Product"
-                                                         width="800" height="900" />
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-cart w-icon-cart"
-                                                       title="Ajouter au panier"></a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-details">
-                                                <h3 class="product-name">
-                                                    <a href="{{route('lire_article',[$item_huit['id']])}}">{{$item_huit['titre']}}</a>
-                                                </h3>
-                                                <div class="product-price">
-{{--                                                    <ins class="new-price">$10.73</ins>--}}
+                                                <figure class="product-media">
+                                                    <a href="{{route('lire_article',[$item_huit['slug']])}}">
+                                                        <img src="{{Storage::url($item_huit['image'])}}" alt="Product"
+                                                             width="800" height="900" />
+                                                    </a>
+                                                    <div class="product-action-vertical">
+                                                        <a href="#" class="btn-product-icon btn-cart w-icon-cart"
+                                                           title="Ajouter au panier"></a>
+                                                    </div>
+                                                </figure>
+                                                <div class="product-details">
+                                                    <h3 class="product-name">
+                                                        <a href="{{route('lire_article',[$item_huit['slug']])}}">{{$item_huit['titre']}}</a>
+                                                    </h3>
+                                                    <div class="product-price">
+    {{--                                                    <ins class="new-price">$10.73</ins>--}}
 
-                                                    @if( $item_huit['prix_promo'] !=null &&  !empty($item_huit['prix_promo']) )
+                                                        @if( $item_huit['prix_promo'] !=null &&  !empty($item_huit['prix_promo']) )
 
-                                                        @if($item_huit->categorie_parente->etat_promotion =='false')
-                                                            <ins class="new-price"> {{number_format($item_huit['prix_promo'],0,'',' ' )}} F </ins>
+                                                            @if($item_huit->categorie_parente->etat_promotion =='false')
+                                                                <ins class="new-price"> {{number_format($item_huit['prix_promo'],0,'',' ' )}} F </ins>
+                                                            @else
+                                                                <ins class="new-price"> {{number_format( round($item_huit['prix_promo']  - ($item_huit['prix_promo'] * $item_huit->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
+                                                            @endif
+                                                            <del class="old-price">  {{number_format($item_huit['prix'],0,'',' ' )}} F </del>
                                                         @else
-                                                            <ins class="new-price"> {{number_format( round($item_huit['prix_promo']  - ($item_huit['prix_promo'] * $item_huit->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
-                                                        @endif
-                                                        <del class="old-price">  {{number_format($item_huit['prix'],0,'',' ' )}} F </del>
-                                                    @else
-                                                        @if($item_huit->categorie_parente->etat_promotion =='false')
-                                                            <ins class="new-price"> {{number_format( $item_huit['prix'],0,'',' ' )}} F </ins>
-                                                        @else
-                                                            <ins class="new-price"> {{ number_format( round( $item_huit['prix']  - ($item_huit['prix'] * $item_huit->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
+                                                            @if($item_huit->categorie_parente->etat_promotion =='false')
+                                                                <ins class="new-price"> {{number_format( $item_huit['prix'],0,'',' ' )}} F </ins>
+                                                            @else
+                                                                <ins class="new-price"> {{ number_format( round( $item_huit['prix']  - ($item_huit['prix'] * $item_huit->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
 
-                                                            <del class="old-price">  {{number_format($item_huit['prix'],0,'',' ' ) }} F </del>
+                                                                <del class="old-price">  {{number_format($item_huit['prix'],0,'',' ' ) }} F </del>
+                                                            @endif
                                                         @endif
-                                                    @endif
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @if($i%2==0)
-                                        </div>
-                                    @endif
-                                @endforeach
+                                        @if( $i>0 && $i%2==0)
+                                            </div>
+                                            <div class="product-col">
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                         <!-- End of Tab Pane -->
@@ -281,7 +282,7 @@
                             <div class="grid-item 1-{{$item_categorie['id']}}">
                                 <div class="product text-center">
                                     <figure class="product-media">
-                                        <a href="{{route('lire_article',[$item_article['id']])}}">
+                                        <a href="{{route('lire_article',[$item_article['slug']])}}">
                                             <img src="{{Storage::url($item_article['image'])}}" alt="Product" width="600"
                                                  height="675" />
                                         </a>
@@ -296,7 +297,7 @@
                                     </figure>
                                     <div class="product-details">
                                         <h3 class="product-name">
-                                            <a class="product-title" href="{{route('lire_article',[$item_article['id']])}}"> {{$item_article['titre']}} </a>
+                                            <a class="product-title" href="{{route('lire_article',[$item_article['slug']])}}"> {{$item_article['titre']}} </a>
                                         </h3>
                                         <div class="product-price">
                                             @if( $item_article['prix_promo'] !=null &&  !empty($item_article['prix']) )
