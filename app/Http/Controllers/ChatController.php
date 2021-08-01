@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 
 class ChatController extends Controller
 {
     public function chat(){
         $ip = Request::ip();
         $conversation = Chat::where('client_concerner','=',$ip)->get();
-        return view('chat',compact('conversation'));
+
+
+        $le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
+        Session::put('panier', $le_panier);
+        Session::save();
+
+        return view('chat',compact('conversation','le_panier'));
     }
 
     public function load_conversation(){

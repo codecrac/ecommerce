@@ -70,7 +70,7 @@
 
                         <div class="col-lg-12">
                             <h4 class="card-title">Corps de l'article</h4>
-                            <textarea id="summernoteExample" name="contenu">{!! $larticle['contenu'] !!}</textarea>
+                            <textarea id="summernote" name="contenu">{!! $larticle['contenu'] !!}</textarea>
                         </div>
                     </div>
                     @if( Auth::user()->modifier =='true' )

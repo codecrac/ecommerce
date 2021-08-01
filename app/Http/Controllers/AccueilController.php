@@ -21,10 +21,18 @@ class AccueilController extends Controller
 //        request()->session()->forget('panier');
 
         $infos_generales = InfosGenerale::first();
-        $menus_pricipaux = Menu::where('id_parent','=',null)->get();
+        $menus_pricipaux = Menu::where('id_parent','=',null)->take(5)->get();
 
         //present sur l'acceuil
         $menu_present_sur_accueil = Menu::where('type','=','menu_simple')->where('present_sur_accueil','=',true)->get();
+
+        //Categorie parente en evidence
+
+        $mis_en_avant_un = Menu::where('mis_en_evidence','=','1')->first();
+        $mis_en_avant_deux = Menu::where('mis_en_evidence','=','2')->first();
+        $mis_en_avant_trois = Menu::where('mis_en_evidence','=','3')->first();
+        $mis_en_avant_quatre = Menu::where('mis_en_evidence','=','4')->first();
+
 
         //initialiser le panier
         $this->le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
@@ -33,7 +41,12 @@ class AccueilController extends Controller
         $this->le_panier = Session::get('panier');
         $le_panier = $this->le_panier;
 
-        return view('welcome',compact('infos_generales','menus_pricipaux','menu_present_sur_accueil','le_panier'));
+        $liste_categories = Menu::where('type','=','menu_simple')->get();
+
+        return view('welcome',compact('infos_generales',
+            'liste_categories','menus_pricipaux','menu_present_sur_accueil','le_panier',
+                'mis_en_avant_un','mis_en_avant_deux','mis_en_avant_trois','mis_en_avant_quatre'
+        ));
     }
 
     public function apropos()

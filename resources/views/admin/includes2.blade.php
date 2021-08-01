@@ -98,7 +98,9 @@
                     </a>
                     <div class="collapse" id="sidebarPages">
                         <ul class="side-nav-second-level">
-
+                            <li>
+                                <a href="{{route('promo_categorie')}}"> Promotion sur categories </a>
+                            </li>
                             @foreach($liste_menus_simple as $item_menu_simple)
                             <li>
                                 <a href="{{route('gestion_article',[$item_menu_simple['id']])}}">{{$item_menu_simple['titre']}}</a>
@@ -130,7 +132,7 @@
                 <li class="side-nav-item">
                     <a href="{{route('gestion_page_accueil')}}" class="side-nav-link">
                         <i class="uil-list-ui-alt"></i>
-                        <span> Categories d'Accueil </span>
+                        <span> Page d'Accueil </span>
                     </a>
                 </li>
 
@@ -145,7 +147,7 @@
 
 
                 @if( Auth::user()->creer_utilisateurs =='true' )
-                    <li class="side-nav-item">
+                   {{-- <li class="side-nav-item">
                         <a href="{{route('register')}}" class="side-nav-link">
                             <i class="uil-user-plus"></i>
                             <span> Ajouter administrateur </span>
@@ -157,7 +159,7 @@
                             <i class="uil-users-alt"></i>
                             <span> Liste Administrateurs </span>
                         </a>
-                    </li>
+                    </li>--}}
                 @endif
             </ul>
 

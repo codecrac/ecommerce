@@ -23,7 +23,7 @@
         {{--        MENU--}}
         {!! Session::get('message','')!!}
         <div class="row">
-            <div class="col-md-5 grid-margin stretch-card">
+            <div class="offset-md-1 col-md-10 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title text-center text-capitalize table-bordered p-3">Menu principal</h4>
@@ -45,12 +45,15 @@
                                             <option value="menu_simple">Menu simple</option>
                                         </select>
                                     </td>
+                                    <td>
+                                        <input type="file" name="illustration[]" class="form-control">
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <form  method="post" action="{{route('ajouter_menu')}}">
+                        <form  method="post" action="{{route('ajouter_menu')}}" enctype="multipart/form-data">
                             <table class="text-center table table-striped table-bordered">
                                 <thead>
                                     <th>Titre</th>
@@ -67,6 +70,9 @@
                                             <option value="parent">Menu parent</option>
                                             <option value="menu_simple">Menu simple</option>
                                         </select>
+                                    </td>
+                                    <td>
+                                        <input type="file" name="illustration[]" class="form-control">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -101,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 grid-margin stretch-card">
+            <div class="col-md-11 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title text-center text-capitalize">Liste menu principaux</h4>
@@ -109,6 +115,7 @@
                             <thead>
                             <th> Titre</th>
                             <th> Type</th>
+                            <th> Banniere</th>
                             <th> #</th>
                             </thead>
                             <tbody>
@@ -116,6 +123,7 @@
                                 <tr>
                                     <td>{{$item_menus['titre']}}</td>
                                     <td>{{$item_menus['type']}}</td>
+                                    <td> <img src="{{Storage::url($item_menus['image_illustration'])}}" width="50px" height="50px"> </td>
                                     <td>
 
                                         <!-- Button trigger modal -->
@@ -136,7 +144,7 @@
                                 <!-- Modal EDITER  -->
                                 <div class="modal fade" id="editer-menu-{{$item_menus['id']}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <form method="post" action="{{route('modifier_menu',[$item_menus['id']])}}">
+                                        <form method="post" action="{{route('modifier_menu',[$item_menus['id']])}}" enctype="multipart/form-data">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
@@ -145,8 +153,15 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <h5>Titre</h5>
                                                      <input required class="form-control" type="text" name="titre_menu" value="{{$item_menus['titre']}}">
+
+                                                    <h5>Banniere</h5>
+                                                    <img src="{{ Storage::url($item_menus['image_illustration']) }}" width="30px" height="30px" />
+                                                    <br/>
+                                                    <input type="file" name="illustration" class="form-control">
                                                 </div>
+
                                                 <div class="modal-footer">
                                                     @if( Auth::user()->modifier =='true' )
                                                         @method('put')
@@ -189,7 +204,7 @@
 {{--        SOUS MENU=======================================================--}}
 {{--        SOUS MENU=======================================================--}}
         <div class="row">
-            <div class="offset-md-3 col-md-6 grid-margin stretch-card">
+            <div class="offset-md-1 col-md-10 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title text-center text-capitalize">Gestion des sous-menus</h4>
@@ -201,21 +216,26 @@
                         <div class="hidden" style="display: none">
                             <table class="table table-bordered">
                                 <tbody>
-                                <tr id="la_ligne_sous_menus">
-                                    <td>
-                                         <input required type="text" name="titre_menu[]" class="form-control">
-                                         <input required type="hidden" value="menu_simple" name="type[]">
-                                    </td>
-                                </tr>
+                                    <tr id="la_ligne_sous_menus">
+                                        <td>
+                                             <input required type="text" name="titre_menu[]" class="form-control">
+                                             <input required type="hidden" value="menu_simple" name="type[]">
+                                        </td>{{--
+                                        <td>
+                                            <input type="file" name="icone[]" class="form-control">
+                                        </td>--}}
+                                        <td>
+                                            <input type="file" name="illustration[]" class="form-control">
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
 
 {{--                        {!! Session::get('message','')!!}--}}
-                        <form  method="post" action="{{route('ajouter_menu')}}">
+                        <form  method="post" action="{{route('ajouter_menu')}}" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <br/>
                                     <h4 class="text-right">Menu parent</h4>
                                 </div>
                                 <div class="col-md-6">
@@ -231,6 +251,8 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <th>Titre sous-menu</th>
+{{--                                    <th>Icone</th>--}}
+                                    <th>Banniere</th>
                                 </thead>
 
                                 <tbody id="le_corps_de_la_table_sous_menus">
@@ -238,6 +260,12 @@
                                         <td>
                                              <input required type="text" name="titre_menu[]" class="form-control">
                                              <input required type="hidden" value="menu_simple" name="type[]" class="form-control">
+                                        </td>{{--
+                                        <td>
+                                             <input type="file" name="icone[]" class="form-control">
+                                        </td>--}}
+                                        <td>
+                                             <input type="file" name="illustration[]" class="form-control">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -283,7 +311,24 @@
                                             <table class="table">
                                                 <tbody>
                                                 <tr>
-                                                    <td class="col-6"> {{$item_sous_menu['titre']}} </td>
+                                                    <td class="col-6">
+                                                        <table>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    {{$item_sous_menu['titre']}} <br/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>{{--
+                                                                <td colspan="2">
+                                                                    <img src="{{ Storage::url($item_sous_menu['icone']) }}" width="30px" height="30px" /> <br/>
+                                                                </td>--}}
+                                                                <td>
+                                                                    <img src="{{ Storage::url($item_sous_menu['image_illustration']) }}" width="30px" height="30px" /> <br/>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+
+                                                    </td>
                                                     <td class="col-6">
                                                         @if( Auth::user()->modifier =='true' )
                                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editer-menu-{{$item_sous_menu['id']}}">
@@ -306,7 +351,7 @@
                                             <!-- Modal EDITER  -->
                                             <div class="modal fade" id="editer-menu-{{$item_sous_menu['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <form method="post" action="{{route('modifier_menu',[$item_sous_menu['id']])}}">
+                                                    <form method="post" action="{{route('modifier_menu',[$item_sous_menu['id']])}}" enctype="multipart/form-data">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLongTitle">Edition</h5>
@@ -315,7 +360,18 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <input required class="form-control" type="text" name="titre_menu" value="{{$item_sous_menu['titre']}}">
+                                                                <h5>Titre</h5>
+                                                                    <input required class="form-control" type="text" name="titre_menu" value="{{$item_sous_menu['titre']}}">
+                                                                <br/>
+                                                             {{--   <h5>Icone</h5>
+                                                                    <img src="{{ Storage::url($item_sous_menu['icone']) }}" width="30px" height="30px" />
+                                                                    <br/>
+                                                                    <input type="file" name="icone" class="form-control">
+                                                                <br/>--}}
+                                                                <h5>Banniere</h5>
+                                                                    <img src="{{ Storage::url($item_sous_menu['image_illustration']) }}" width="30px" height="30px" />
+                                                                    <br/>
+                                                                    <input type="file" name="illustration" class="form-control">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 @if( Auth::user()->modifier =='true' )

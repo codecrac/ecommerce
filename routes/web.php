@@ -6,7 +6,6 @@ use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommandeController;
-use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\FrontArticleController;
 use App\Http\Controllers\FrontEvenementController;
 use App\Http\Controllers\InfoGeneraleController;
@@ -18,10 +17,8 @@ use App\Http\Controllers\UtilisateurController;
 use App\Models\Article;
 use App\Models\Client;
 use App\Models\Commande;
-use App\Models\Evenement;
 use App\Models\InfosGenerale;
 use App\Models\Menu;
-use App\Models\Publicite;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,15 +92,16 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function 
     Route::put('/modifier-menu/{id_menu}',[MenuController::class,'modifier_menu'])->name('modifier_menu');
     Route::delete('/supprimer-menu/{id_menu}',[MenuController::class,'supprimer_menu'])->name('supprimer_menu');
 
+    //promotion par categorie
+    Route::get('/promotion-sur-categorie',[MenuController::class,'promo_categorie'])->name('promo_categorie');
+    Route::put('/promotion-sur-categorie/{id_menu}',[MenuController::class,'modifier_promotion_categorie'])->name('modifier_promotion_categorie');
+    Route::put('/etat-toute-promotion-sur-categorie',[MenuController::class,'modifier_etat_toute_promo'])->name('modifier_etat_toute_promo');
+
 //=========================commandes
     Route::get('/gestion-commandes',[CommandeController::class,'index'])->name('gestion_commande');
     Route::get('/details-commandes/{id_commande}',[CommandeController::class,'details_commande'])->name('details_commande');
     Route::post('/modifier-etat-commande/{id_commande}',[CommandeController::class,'modifier_etat_commande'])->name('modifier_etat_commande');
-    /*Route::get('/ajouter-article/{id_menu}',[ArticleController::class,'ajouter'])->name('ajouter_article');
-    Route::post('/ajouter-article/{id_menu}',[ArticleController::class,'enregistrer_article'])->name('enregistrer_article');
-    Route::get('/editer-article/{id_article}',[ArticleController::class,'editer_article'])->name('editer_article');
-    Route::put('/modifier-article/{id_article}',[ArticleController::class,'modifier_article'])->name('modifier_article');
-    Route::delete('/supprimer-article/{id_article}',[ArticleController::class,'supprimer_article'])->name('supprimer_article');*/
+
 
 //=========================article
     Route::get('/gestion-article/{id_menu}',[ArticleController::class,'index'])->name('gestion_article');
@@ -115,11 +113,7 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function 
 
 //=========================newsletter
     Route::get('/newsletter',[NewsletterController::class,'index'])->name('newsletter');
-    /*Route::get('/ajouter-evenement',[EvenementController::class,'ajouter'])->name('ajouter_evenement');
-    Route::post('/ajouter-evenement',[EvenementController::class,'enregistrer_evenement'])->name('enregistrer_evenement');
-    Route::get('/editer-evenement/{id_evenement}',[EvenementController::class,'editer_evenement'])->name('editer_evenement');
-    Route::put('/modifier-evenement/{id_evenement}',[EvenementController::class,'modifier_evenement'])->name('modifier_evenement');
-    Route::delete('/supprimer-evenement/{id_evenement}',[EvenementController::class,'supprimer_evenement'])->name('supprimer_evenement');*/
+    Route::post('/newsletter',[NewsletterController::class,'envoyer_message_au_client'])->name('envoyer_message_au_client');
 
 //=========================publicite
     Route::get('/gestion-publicite',[PubliciteController::class,'index'])->name('gestion_publicite');
@@ -132,6 +126,7 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function 
 //=========================Page accueil
     Route::get('/gestion-page-accueil',[PageAccueilController::class,'index'])->name('gestion_page_accueil');
     Route::post('/gestion-page-accueil',[PageAccueilController::class,'enregistrer_page_accueil'])->name('enregistrer_page_accueil');
+    Route::post('/categorie-mise-en-avant-page-accueil',[PageAccueilController::class,'categorie_mise_en_avant_page_accueil'])->name('categorie_mise_en_avant_page_accueil');
 
 //=========================Infos generales
     Route::get('/gestion-infos-generales',[InfoGeneraleController::class,'index'])->name('gestion_infos_generales');

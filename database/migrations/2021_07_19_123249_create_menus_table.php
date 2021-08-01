@@ -16,9 +16,14 @@ class CreateMenusTable extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->integer('id_parent')->nullable();
+            $table->integer('reduction')->default(0);
+            $table->enum('etat_promotion',['false','true']);
             $table->enum('type',['parent','menu_simple']);  // pour le rangement dans le menu
             $table->string('titre')->unique();
+            $table->string('icone')->nullable();
+            $table->string('image_illustration')->nullable();
             $table->boolean('present_sur_accueil')->default(true);
+            $table->enum('mis_en_evidence',['non','1','2','3','4'])->default('non');
         });
     }
 

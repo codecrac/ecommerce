@@ -25,9 +25,20 @@ class PanierController extends Controller
         $larticle = Article::find($id_article);
 
         $prix = $larticle->prix;
+
+        //promotion
+        if($larticle->categorie_parente->etat_promotion =='true'){
+            $prix = round( $larticle->prix - ($larticle->prix * $larticle->categorie_parente->reduction/100) );
+        }
+
         if($larticle->prix_promo !=null && !empty($larticle->prix_promo)){
             $prix = $larticle->prix_promo;
+
+            if($larticle->categorie_parente->etat_promotion =='true'){
+                $prix = round( $larticle->prix_promo - ($larticle->prix_promo * $larticle->categorie_parente->reduction/100) );
+            }
         }
+
 
         $prix_total = $quantite * $prix;
         $item_panier = [
@@ -87,10 +98,12 @@ class PanierController extends Controller
         $le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
 
         $contenu_panier = $le_panier['contenu'];
-
+        $article_a_retirer = $contenu_panier[$index];
+        $nv_grand_total = $le_panier['grand_total'] - $article_a_retirer['prix_total'];
         array_splice($contenu_panier,$index,1);
 
         $le_panier['contenu'] = $contenu_panier;
+        $le_panier['grand_total'] = $nv_grand_total;
         Session::put('panier', $le_panier);
         Session::save();
 
@@ -135,7 +148,7 @@ class PanierController extends Controller
     public function enregistrer_commande(Request $request){
 
         $le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
-        $le_panier = $le_panier;
+//        dd($le_panier);
 
 //        $le_panier_en_json = json_encode($le_panier['contenu']);
 //        $le_panier_en_bcript = b ($le_panier);
@@ -175,21 +188,56 @@ class PanierController extends Controller
         $la_commande->panier = $le_panier_en_json;
 
         if($la_commande->save()){ // enregistrer la commande
-            request()->session()->forget('panier');
 
             $infos_generales = InfosGenerale::first();
 
             $nom_organisation = $infos_generales->organisation;
 
             $to = $la_commande->client->email;
+//            dd($to);
             $subject = " $nom_organisation | Le Traitement de votre commande avance... ";
 
-            $message_du_mail = "<div class='alert alert-success text-center'> Etat de la commande mise a jour avec succces </div>";
+            $le_tableau_article = "
+                <table border='0.5' style='padding: 5px;width: 300px'>
+                    <thead>
+                        <tr style='padding: 5px'>
+                            <th>Produit</th>
+                            <th>Quantite</th>
+                            <th>Prix</th>
+                            <th>Total</th>
+                        </tr>
 
-            $headers = "From: $infos_generales->email"       . "\r\n" .
+                        <tbody>";
+//            dd($le_panier);
+                            foreach($le_panier['contenu'] as $item_article ):
+                                $prix_total = number_format($item_article['prix_total'],0,'',' ');
+            $le_tableau_article .="<tr style='padding: 5px'>
+                                    <td>{$item_article['titre']}</td>
+                                    <td>{$item_article['qte']}</td>
+                                    <td> {$item_article['prix']} </td>
+                                    <td> <b> $prix_total F</b> </td>
+                                </tr>";
+                            endforeach;
+
+            $le_tableau_article .=  "</tbody>
+                    </thead>
+                </table>
+            ";
+
+
+            $message_du_mail = "<div class='alert alert-success text-center'>
+                                    Votre Commande a bien été enregstrée.<br/>
+                                    Reference : #$la_commande->id <br/>
+                                    $infos_generales->organisation vous remercie.<br/>
+                                    $le_tableau_article
+                                </div>";
+
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= "From: $infos_generales->email"       . "\r\n" .
                 "Reply-To:  $infos_generales->email" . "\r\n" ;
 
-           if( mail( [$to ,$infos_generales->email ], $subject,  $message_du_mail ,$headers) ){
+           if( mail( $to, $subject,  $message_du_mail ,$headers) ){
                $mention_email = " email envoyer  ";
            }else{
                $mention_email = " email non envoyer  ";
@@ -199,6 +247,9 @@ class PanierController extends Controller
             $message = "<div class='container text-center' style='background-color: #cef4e9;padding: 20px;font-weight: bold;margin:5px 10px;'>
                         $mention_email | Votre Commande a bien été enregstrée. <a href='/'>retour à l'accueil</a>
                         </div>";
+
+
+            request()->session()->forget('panier');
         }else{
             $message = "<div class='container text-center' style='background-color: #d54e69;padding: 20px;font-weight: bold;margin:5px 10px;'>
                         $mention_email | Quelque chose s'est mal passé. <a href='$route_panier'>réessayer</a>
