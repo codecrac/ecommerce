@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminChatController extends Controller
 {
+
     public function chat_admin()
     {
         $liste_chat = Chat::get()->groupBy('client_concerner');

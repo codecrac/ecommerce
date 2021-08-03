@@ -1,9 +1,6 @@
 @extends('admin.includes2')
 
 @section('style_complementaire')
-    <!-- Datatables css -->
-    <link href="/assets/css/vendor/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/css/vendor/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('body')
@@ -24,6 +21,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header">
+                        En attente : <span style="font-size: 20px">{{$nb_commande_en_attente}} | </span>
+                        Emballer : <span style="font-size: 20px">{{$nb_commande_emballer}} | </span>
+                        Livraison en cours : <span style="font-size: 20px">{{$nb_commande_en_cours_de_livraison}}</span>
+                    </div>
+
                     <div class="card-body">
                        {{-- <div class="row mb-2">
                             <div class="col-xl-8">
@@ -106,7 +109,6 @@
 @endsection
 
 @section('script_complementaire')
-    <script src="{{asset('assets/js/vendor/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/vendor/dataTables.bootstrap4.js')}}"></script>
-{{--    <script src="{{asset('assets/js/data-table.js')}}"></script>--}}
+
+
 @endsection

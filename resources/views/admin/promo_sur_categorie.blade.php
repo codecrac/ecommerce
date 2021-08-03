@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <table class="table table-striped table-centered mb-0">
+    <table id="basic-datatable" class="table table-striped table-centered mb-0">
         <thead>
         <tr>
             <th>Categories</th>

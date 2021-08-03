@@ -16,8 +16,8 @@
                 @endif
 
                 <div class="row">
-                    <div class="col-12">
-                        <table id="order-listing" class="table table-striped table-bordered">
+                    <div class="col-12 mt-4">
+                        <table id="basic-datatable" class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th>Image</th>

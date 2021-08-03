@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CommandeMail;
 use App\Models\Article;
 use App\Models\Client;
 use App\Models\Commande;
 use App\Models\InfosGenerale;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use function Sodium\add;
 
@@ -124,6 +126,7 @@ class PanierController extends Controller
         $message = "<div class='container text-center' style='background-color: #cef4e9;padding: 20px;font-weight: bold;margin:5px 10px;'>
                         Mise à jour du panier éffectuée.
                     </div>";
+
         return redirect()->route('voir_le_panier')->with('message',$message);
 
     }
@@ -143,7 +146,6 @@ class PanierController extends Controller
         $le_panier = $le_panier;
 
 //        dd($le_panier);
-
         return view('panier',compact('infos_generales', 'menus_principaux','le_panier','liste_categories') );
     }
 
@@ -188,6 +190,9 @@ class PanierController extends Controller
         $la_commande->nb_article = $le_panier['nb_article'];
         $la_commande->valeur_total = $le_panier['grand_total'];
         $la_commande->panier = $le_panier_en_json;
+        $la_commande->etat = "Attente";
+
+        $infos_generales = InfosGenerale::first();
 
         if($la_commande->save()){ // enregistrer la commande
 
@@ -195,56 +200,16 @@ class PanierController extends Controller
 
             $nom_organisation = $infos_generales->organisation;
 
-            $to = $la_commande->client->email;
-//            dd($to);
             $subject = " $nom_organisation | Le Traitement de votre commande avance... ";
 
-            $le_tableau_article = "
-                <table border='0.5' style='padding: 5px;width: 300px'>
-                    <thead>
-                        <tr style='padding: 5px'>
-                            <th>Produit</th>
-                            <th>Quantite</th>
-                            <th>Prix</th>
-                            <th>Total</th>
-                        </tr>
-
-                        <tbody>";
-//            dd($le_panier);
-                            foreach($le_panier['contenu'] as $item_article ):
-                                $prix_total = number_format($item_article['prix_total'],0,'',' ');
-            $le_tableau_article .="<tr style='padding: 5px'>
-                                    <td>{$item_article['titre']}</td>
-                                    <td>{$item_article['qte']}</td>
-                                    <td> {$item_article['prix']} </td>
-                                    <td> <b> $prix_total F</b> </td>
-                                </tr>";
-                            endforeach;
-
-            $le_tableau_article .=  "</tbody>
-                    </thead>
-                </table>
-            ";
-
-
-            $message_du_mail = "<div class='alert alert-success text-center'>
-                                    Votre Commande a bien été enregstrée.<br/>
-                                    Reference : #$la_commande->id <br/>
-                                    $infos_generales->organisation vous remercie.<br/>
-                                    $le_tableau_article
-                                </div>";
-
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= "From: $infos_generales->email"       . "\r\n" .
-                "Reply-To:  $infos_generales->email" . "\r\n" ;
-
-           if( mail( $to, $subject,  $message_du_mail ,$headers) ){
-               $mention_email = " email envoyer  ";
-           }else{
-               $mention_email = " email non envoyer  ";
-           }
-
+            $email_entreprise = $infos_generales['email'];
+            try{
+                Mail::to(["$email_client","$email_entreprise"])->send(new CommandeMail(0,$infos_generales,$la_commande));
+                $mention_email = "email envoyer";
+            }catch (\Exception $e){
+//                dd($e->getMessage());
+                $mention_email = "Echec envoi email";
+            }
 
             $message = "<div class='container text-center' style='background-color: #cef4e9;padding: 20px;font-weight: bold;margin:5px 10px;'>
                         $mention_email | Votre Commande a bien été enregstrée. <a href='/'>retour à l'accueil</a>
@@ -254,7 +219,7 @@ class PanierController extends Controller
             request()->session()->forget('panier');
         }else{
             $message = "<div class='container text-center' style='background-color: #d54e69;padding: 20px;font-weight: bold;margin:5px 10px;'>
-                        $mention_email | Quelque chose s'est mal passé. <a href='$route_panier'>réessayer</a>
+                          Quelque chose s'est mal passé. <a href='$route_panier'>réessayer</a>
                         </div>";
         }
 

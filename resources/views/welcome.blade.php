@@ -1,5 +1,49 @@
 @extends('front_includes')
 
+@section('style_complementaire')
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
+@endsection
+
+
 @section('body')
 
     <!-- Start of Main -->
@@ -353,24 +397,67 @@
         </div>
     </main>
     <!-- End of Main -->
+    <!-- Trigger/Open The Modal -->
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="btn_close" class="close">&times;</span>
+                <h2 class="text-center"> {{$infos_generales['organisation']}} </h2>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="text-center">Souscrivez a notre newsletter et soyez informez de nos promotions et autres evenements </h6>
+                    </div>
+                    <div  class="text-center col-md-12">
+                            <input type="email" class="form-control mr-2 bg-white" name="email" id="email_client"
+                                   placeholder="Entrer votre adresse e-mail" />
+                            <button class="btn btn-dark btn-rounded" id="reponse_newsletter" type="button" onclick="inscrire_a_la_newsletter()" >
+                                Souscrire <i class="w-icon-long-arrow-right"></i>
+                            </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+{{--                <h3>Modal Footer</h3>--}}
+            </div>
+        </div>
+
+    </div>
+
+@endsection
+
+
+@section('script_complementaire')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
     <script>
-        function ajouter_au_panier(id){
-            let id_article = id;
-            let quantite = 1;
+        // Get the modal
+        var modal = document.getElementById("myModal");
 
-            $.ajax({
-                method : "GET",
-                url: "/ajouter_au_panier/"+id_article+"/"+quantite,
-                success : function (response){
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
 
-                    let taille_panier = $('#taille_panier').text();
-                    let nv_taille = taille_panier*1 + 1;
-                    $('#taille_panier').text(nv_taille);
-                    // alert (response);
-                    // $('.btn-cart').click();
-                }
-            })
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
         }
-    </script>
 
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        setTimeout(function (){
+            if ($.cookie('popup_email') == null) {
+                modal.style.display = "block";
+                $.cookie('popup_email', '12');
+            }
+        },200);
+    </script>
 @endsection

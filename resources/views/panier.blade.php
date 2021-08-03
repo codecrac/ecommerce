@@ -11,7 +11,11 @@
         <nav class="breadcrumb-nav">
             <div class="container">
                 <ul class="breadcrumb shop-breadcrumb bb-no">
-                    <li>Votre Panier</li>
+                    <li></li>
+                    <li>
+                        <b class="amount cadre_orange">Mon Panier</b>
+                    </li>
+                    <li> </li>
                 </ul>
             </div>
         </nav>
@@ -110,14 +114,14 @@
                                         <h5> Telephone </h5>
                                         <input class="form-control" type="number" name="telephone" required>
                                     <br/>
-                                        <h5> Adresse </h5>
+                                        <h5> Ou souhaitez-vous être livrer ? </h5>
                                         <input class="form-control" type="text" name="adresse" required>
                                     <br/>
                                         <h5> Email </h5>
                                         <input class="form-control" type="email" name="email" required>
                                     <br/>
-                                        <h5> Mot de passe </h5>
-                                        <input class="form-control" type="password" name="mot_de_passe" required>
+                                        <h5 style="display: none"> Mot de passe </h5>
+                                        <input style="display: none" class="form-control" type="password" name="mot_de_passe" value="djd" required>
 
 
 

@@ -19,6 +19,7 @@ use App\Models\Client;
 use App\Models\Commande;
 use App\Models\InfosGenerale;
 use App\Models\Menu;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,13 +69,48 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
     $nb_client = Client::count();
 
-    $nb_commandes = Commande::count();
+    $nb_commandes = Commande::where('etat','=','attente')->count();
 
     $nb_menus_parent = Menu::where('type','=','parent')->get();
     $nb_menus_parent = sizeof($nb_menus_parent);
 
     $nb_article = Article::count();
-    return view('dashboard',compact('liste_menus_simple','nb_client','nb_commandes','nb_menus_simples','nb_menus_parent','nb_article','infos_generales'));
+
+    //STATISTIQUES
+    $periode_statistique = "Ce mois";
+
+    $date_debut = new Carbon('first day of this month');
+    $date_debut = $date_debut->format('Y-m-d');
+
+    $date_fin = new DateTime('tomorrow');
+    $date_fin = $date_fin->format('Y-m-d');
+
+    if( isset($_GET['date_debut']) && isset($_GET['date_fin']) ){
+        $date_debut = $_GET['date_debut'];
+        $date_fin = $_GET['date_fin'];
+        $periode_statistique =  date('d/m/Y',strtotime($date_debut)) ." - " . date('d/m/Y',strtotime($date_fin));
+    }
+
+    //GERER L'INTERVALE DU BETWEEN POUR INCURE LES JOURS DANS LA RECHERCHE
+        $date_debut_intervale_forme =  Carbon::createFromFormat('Y-m-d', $_GET['date_debut']);
+        $date_debut_intervale_forme = $date_debut_intervale_forme->addDays(-1);
+
+        $date_fin_intervale_forme =  Carbon::createFromFormat('Y-m-d', $_GET['date_fin']);
+        $date_fin_intervale_forme = $date_fin_intervale_forme->addDays(1);
+
+
+    $nb_commande_periode_stat = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->count();
+
+    $stat_chiffre_affaire = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->where('etat','=','livrer')->sum('valeur_total');
+    $stat_cmd_liver = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->where('etat','=','livrer')->count();
+    $stat_cmd_annuler = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->where('etat','=','annuler')->count();
+    $stat_cmd_echec_de_livraison = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->where('etat','=','echec_de_livraison')->count();
+
+
+    return view('dashboard',compact('liste_menus_simple',
+        'nb_client','nb_commandes','nb_menus_simples','nb_menus_parent','nb_article','infos_generales',
+    'periode_statistique','date_debut','date_fin','stat_chiffre_affaire','nb_commande_periode_stat','stat_cmd_liver','stat_cmd_echec_de_livraison','stat_cmd_annuler'
+    ));
 })->name('dashboard');
 
 

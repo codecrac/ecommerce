@@ -36,18 +36,18 @@ class BoutiqueController extends Controller
             }
         }
 
-        $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderBy('id','desc')->paginate(25);
+        $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderBy('id','desc')->paginate(12);
 
         //tri et filtre
         $le_tri = '';
         if(isset($_GET['tri'])){
             $le_tri = $_GET['tri'];
             if($le_tri == 'nouvelle-arrivage'){
-                $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderBy('id','desc')->paginate(25);
+                $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderBy('id','desc')->paginate(12);
             }elseif($le_tri=='prix-croissant'){
-                $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderByRaw("if(prix_promo=0, prix, prix_promo) " . request('prix', 'ASC'))->paginate(25);
+                $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderByRaw("if(prix_promo=0, prix, prix_promo) " . request('prix', 'ASC'))->paginate(12);
             }elseif($le_tri=='prix-decroissant'){
-                $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderByRaw("if(prix_promo=0, prix, prix_promo) " . request('prix', 'DESC'))->paginate(25);
+                $liste_articles = DB::table('articles')->where('id_menu','=',$la_categorie->id)->orderByRaw("if(prix_promo=0, prix, prix_promo) " . request('prix', 'DESC'))->paginate(12);
             }
 //            dd('trier');
         }

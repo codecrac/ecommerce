@@ -1,5 +1,11 @@
+
+@php
+    $nb_commande = \App\Models\Commande::count();
+@endphp
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 
 <!-- Mirrored from coderthemes.com/hyper/saas/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 22 Jul 2021 00:19:50 GMT -->
@@ -23,10 +29,29 @@
 
     <link href="{{asset('summernote/summernote-lite.min.css')}}" rel="stylesheet">
 
+    <!-- Datatables css -->
+    <link href="{{asset('/assets/css/vendor/dataTables.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('/assets/css/vendor/responsive.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
 
     <style>
         .content-page{
             overflow-x: auto !important;
+        }
+
+        .commande_clignote {
+            color: #fff;
+            animation: blink-animation 1s steps(5, start) infinite;
+            -webkit-animation: blink-animation 1s steps(5, start) infinite;
+        }
+        @keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
+        }
+        @-webkit-keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
         }
     </style>
 
@@ -75,13 +100,13 @@
 
                 <li class="side-nav-title side-nav-item">Section publique</li>
 
-                <li class="side-nav-item">
+             {{--   <li class="side-nav-item">
                     <a href="{{route('chat_admin')}}" class="side-nav-link">
                         <i class="uil-align-center"></i>
                         <span> Chats (3) </span>
                     </a>
                 </li>
-
+--}}
                 <li class="side-nav-item">
                     <a href="{{route('gestion_menus')}}" class="side-nav-link">
                         <i class="uil-align-center"></i>
@@ -98,9 +123,6 @@
                     </a>
                     <div class="collapse" id="sidebarPages">
                         <ul class="side-nav-second-level">
-                            <li>
-                                <a href="{{route('promo_categorie')}}"> Promotion sur categories </a>
-                            </li>
                             @foreach($liste_menus_simple as $item_menu_simple)
                             <li>
                                 <a href="{{route('gestion_article',[$item_menu_simple['id']])}}">{{$item_menu_simple['titre']}}</a>
@@ -111,11 +133,14 @@
                 </li>
                 @endif
 
+                <li class="side-nav-item">
+                    <a  class="side-nav-link" href="{{route('promo_categorie')}}"><i class="uil">%</i> Promotion sur categories </a>
+                </li>
 {{--                @if( Auth::user()->publicite =='true' )--}}
                     <li class="side-nav-item">
                         <a href="{{route('gestion_commande')}}" class="side-nav-link">
                             <i class="uil-cell"></i>
-                            <span> Commandes </span>
+                            <span> Commandes <b class="{{$nb_commande>0?'commande_clignote':''}}" >( {{$nb_commande}} )</b> </span>
                         </a>
                     </li>
 {{--                @endif--}}
@@ -181,8 +206,10 @@
             <div class="navbar-custom">
                 <ul class="list-unstyled topbar-menu float-end mb-0">
                     <li class="notification-list">
-                        <a class="nav-link end-bar-toggle" href="javascript: void(0);">
-                            <i class="dripicons-gear noti-icon"></i>
+                        <a class="commande_clignote nav-link end-bar-toggle" href="{{route('gestion_commande')}}">
+                            @if($nb_commande >0 )
+                               <h3 class="text-danger"> <br/> {{$nb_commande}} commande non livrer </h3>
+                            @endif
                         </a>
                     </li>
 
@@ -294,6 +321,17 @@
         ]
     });
 </script>
+
+<!-- Datatables js -->
+<script src="{{asset('/assets/js/vendor/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('/assets/js/vendor/dataTables.bootstrap4.js')}}"></script>
+
+<script src="{{asset('assets/js/vendor/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('assets/js/vendor/responsive.bootstrap4.min.js')}}"></script>
+
+<!-- Datatable Init js -->
+<script src="{{asset('assets/js/pages/demo.datatable-init.js')}}"></script>
+
 @yield('script_complementaire')
 
 </body>

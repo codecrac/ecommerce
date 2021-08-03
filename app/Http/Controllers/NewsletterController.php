@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewsletterInfoMail;
 use App\Models\Article;
 use App\Models\Client;
 use App\Models\InfosGenerale;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class NewsletterController extends Controller
 {
@@ -20,8 +22,11 @@ class NewsletterController extends Controller
 
     public function envoyer_message_au_client(Request $request){
         $df = $request->all();
+
+        $infos_generales = InfosGenerale::first();
         $liste_client = Client::select('email')->get();
-        $liste_email = [];
+
+        $liste_email = [$infos_generales['email']];
         foreach ($liste_client as $item_email){
             array_push($liste_email,$item_email['email']);
         }
@@ -39,12 +44,23 @@ class NewsletterController extends Controller
 //        dd($df);
 
 
+//        return view('emails.newsletter_info',compact('infos_generales','sujet','corps_du_message'));
+
+//        if(Mail::to($liste_email)->send(new NewsletterInfoMail($infos_generales,$sujet,$corps_du_message)) ){
+        Mail::to($liste_email)->send(new NewsletterInfoMail($infos_generales,$sujet,$corps_du_message));
+            $message_notif = "<div class='alert alert-success text-center'> Message diffuser avec succes </div>";
+            return redirect()->back()->with('message',$message_notif);
+        /*}else{
+            $message_notif = "<div class='alert alert-danger text-center'> Echec de diffusion du message, veuillez réessayer.  </div>";
+            return redirect()->back()->with('message',$message_notif);
+        }*/
+/*
         if( mail( $email_destinataire, $sujet,  $corps_du_message ,$headers) ){
             $message_notif = "<div class='alert alert-success text-center'> Message diffuser avec succes </div>";
             return redirect()->back()->with('message',$message_notif);
         }else{
             $message_notif = "<div class='alert alert-danger text-center'> Echec de diffusion du message, veuillez réessayer.  </div>";
             return redirect()->back()->with('message',$message_notif);
-        }
+        }*/
     }
 }

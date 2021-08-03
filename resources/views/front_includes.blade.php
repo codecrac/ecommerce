@@ -153,7 +153,7 @@
                                     <a href="{{route('accueil')}}">Accueil</a>
                                 </li>
                                 @foreach($menus_principaux as $item_categorie_parente)
-                                    @if($item_categorie_parente['type']=='parente')
+                                    @if($item_categorie_parente['type']=='parent')
                                     <li>
                                         <a href="{{route('boutique',[$item_categorie_parente['slug']])}}">{{$item_categorie_parente['titre']}}</a>
                                         <ul>
@@ -374,6 +374,10 @@
             url: route,
             success : function (reponse){
                 $('#reponse_newsletter').html(reponse);
+                setTimeout(function (){
+                    $('#btn_close').click();
+                },1000);
+
             },
             error: function(error){
                 alert(error.responseText.message);

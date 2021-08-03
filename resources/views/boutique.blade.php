@@ -54,7 +54,7 @@
                                         <h3 class="widget-title"><span>{{$item_principal['titre']}}</span></h3>
                                         <ul class="widget-body filter-items search-ul">
                                             @foreach($item_principal->enfants as $item_categorie)
-                                                <li><a href="{{route('boutique',[$item_categorie['id']])}}">{{$item_categorie['titre']}}</a></li>
+                                                <li><a href="{{route('boutique',[$item_categorie['slug']])}}">{{$item_categorie['titre']}}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
