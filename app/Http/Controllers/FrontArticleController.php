@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Client;
 use App\Models\Commande;
 use App\Models\Evenement;
 use App\Models\InfosGenerale;
@@ -76,7 +77,9 @@ class FrontArticleController extends Controller
         }else if($id_menu == '-1'){
             $mot_cle = str_replace('#','',$mot_cle);
             $resultat_commande = Commande::where('id','=',$mot_cle)->first();
-            dd($resultat_commande);
+//            dd($resultat_commande);
+            return view('suivre_commande',compact('mot_cle','infos_generales','liste_categories',
+                'menus_principaux','resultat_commande','le_panier'));
         }else{
             $resultat_article = Article::where('id_menu','=',$id_menu)
                 ->where('titre','LIKE','%'.$mot_cle.'%')
@@ -89,5 +92,31 @@ class FrontArticleController extends Controller
 
         return view('resultat_recherche',compact('mot_cle','infos_generales','liste_categories',
             'menus_principaux','resultat_article','le_panier'));
+    }
+
+    public function inscrire_a_la_newsletter($email_client){
+
+        $le_client = Client::where('email','=',$email_client)->first();
+
+        if($le_client ==null) {
+            $client = new Client();
+            $client->nom = '';
+            $client->email = $email_client;
+            $client->telephone = '';
+            $client->mot_de_passe = '-';
+            $client->adresse = '';
+
+            if(!$client->save()){
+                $message = " Quelque chose s'est mal passé, <a href='$route_panier'>réessayer</a>";
+            }else{
+                $message = "<div class='container text-center' style='padding: 20px;font-weight: bold;'>
+                            Meci :-)
+                        </div>";
+            }
+        }else{
+            $message = "<div class='container text-center' style='padding: 20px;font-weight: bold;'> Meci :-)</div>";
+        }
+        return $message;
+
     }
 }

@@ -15,6 +15,7 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->nullable();
             $table->integer('id_parent')->nullable();
             $table->integer('reduction')->default(0);
             $table->enum('etat_promotion',['false','true']);

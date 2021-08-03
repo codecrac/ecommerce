@@ -68,7 +68,7 @@
                                         <div class="product-meta">
                                             <div class="product-categories">
                                                 Categorie:
-                                                <span class="product-category"><a href="#"> {{$larticle->categorie_parente->titre}} </a> </span>
+                                                <span class="product-category"><a href="{{route('boutique',[$larticle->categorie_parente->slug])}}"> {{$larticle->categorie_parente->titre}} </a> </span>
                                             </div>
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@
                                         </div>
                                     </figure>
                                     <div class="product-details">
-                                        <h4 class="product-name"><a href="product-default.html">{{$item['titre']}}</a></h4>
+                                        <h4 class="product-name"><a href="{{route('lire_article',[$item['slug']])}}">{{$item['titre']}}</a></h4>
                                         <div class="product-pa-wrapper">
 
                                             @if( $item['prix_promo'] !=null &&  !empty($item['prix_promo']) )
@@ -192,6 +192,11 @@
                                                     <del class="old-price"> &nbsp;&nbsp; {{number_format($item['prix'],0,'',' ' ) }} F </del>
                                                 @endif
                                             @endif
+                                        </div>
+
+                                        <div class="text-center hidden-md">
+                                            <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item['id']}})"
+                                                title="Ajouter au panier"> Ajouter au panier</h5>
                                         </div>
                                     </div>
                                 </div>

@@ -8,7 +8,6 @@ use App\Http\Controllers\BoutiqueController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FrontArticleController;
-use App\Http\Controllers\FrontEvenementController;
 use App\Http\Controllers\InfoGeneraleController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageAccueilController;
@@ -41,6 +40,9 @@ Route::get('/boutique/{id_menu_simple}', [BoutiqueController::class,'index'])->n
 /*Route::get('/page-article/{id_menu_simple}', [FrontArticleController::class,'page_article'])->name('page_article');
 Route::get('/evenement/{id_evenement}', [FrontEvenementController::class,'details_evenement'])->name('details_evenement');*/
 Route::get('/articles/{id_article}', [FrontArticleController::class,'index'])->name('lire_article');
+
+
+Route::get('/inscrire_a_la_newsletter/{email}', [FrontArticleController::class,'inscrire_a_la_newsletter'])->name('inscrire_a_la_newsletter');
 
 //panier
 Route::get('/ajouter_au_panier/{id_article}/{quantite?}', [PanierController::class,'ajouter'])->name('ajouter_au_panier');
@@ -90,9 +92,9 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function 
 
 //=========================menu
     Route::get('/gestion-menu',[MenuController::class,'index'])->name('gestion_menus');
-    Route::post('/ajouter-menu',[MenuController::class,'ajouter_menu'])->name('ajouter_menu');
-    Route::put('/modifier-menu/{id_menu}',[MenuController::class,'modifier_menu'])->name('modifier_menu');
-    Route::delete('/supprimer-menu/{id_menu}',[MenuController::class,'supprimer_menu'])->name('supprimer_menu');
+    Route::post('/gestion-menu',[MenuController::class,'enregistrer_menu'])->name('ajouter_menu');
+    Route::put('/gestion-menu/{id_menu}',[MenuController::class,'modifier_menu'])->name('modifier_menu');
+    Route::delete('/gestion-menu/{id_menu}',[MenuController::class,'supprimer_menu'])->name('supprimer_menu');
 
     //promotion par categorie
     Route::get('/promotion-sur-categorie',[MenuController::class,'promo_categorie'])->name('promo_categorie');

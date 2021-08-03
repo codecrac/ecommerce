@@ -74,7 +74,6 @@ class ArticleController extends Controller
         }
 
         if($article->save()){
-
             $a_slugger = $df['titre'].'.'.$article->id;
             $article->slug = Str::Slug($a_slugger);
             $article->save();

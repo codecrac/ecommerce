@@ -23,7 +23,7 @@
                                 </h5>
                             @endif
                             <br/>
-                            <a href="{{route('boutique',[$mis_en_avant_un['id']])}}" class="btn btn-white btn-outline btn-rounded btn-icon-right">
+                            <a href="{{route('boutique',[$mis_en_avant_un['slug']])}}" class="btn btn-white btn-outline btn-rounded btn-icon-right">
                                 Decouvrir<i class="w-icon-long-arrow-right"></i>
                             </a>
                         </div>
@@ -43,7 +43,7 @@
                                         ( {{$mis_en_avant_deux['reduction']}}% )
                                     @endif
                             </h3>
-                            <a href="{{route('boutique',[$mis_en_avant_deux['id']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
+                            <a href="{{route('boutique',[$mis_en_avant_deux['slug']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
                                 Acheter maintenant<i class="w-icon-long-arrow-right"></i>
                             </a>
                         </div>
@@ -64,7 +64,7 @@
                                 </div>
                             @endif
 
-                            <a href="{{route('boutique',[$mis_en_avant_trois['id']])}}" class="btn btn-white btn-link btn-underline"> Decouvrir la Collection</a>
+                            <a href="{{route('boutique',[$mis_en_avant_trois['slug']])}}" class="btn btn-white btn-link btn-underline"> Decouvrir la Collection</a>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                                 </h5>
                             @endif
                             <h3 class="banner-title text-capitalize ls-25 text-white"> {{$mis_en_avant_quatre['titre']}} </h3>
-                            <a href="{{route('boutique',[$mis_en_avant_quatre['id']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
+                            <a href="{{route('boutique',[$mis_en_avant_quatre['slug']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
                                 Voir les articles <i class="w-icon-long-arrow-right"></i>
                             </a>
                         </div>
@@ -139,6 +139,11 @@
                                             @endif
                                         @endif
                                     </div>
+                                </div>
+
+                                <div class="text-center hidden-md">
+                                    <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item_avec_promo['id']}})"
+                                        title="Ajouter au panier"> Ajouter au panier</h5>
                                 </div>
                             </div>
                             @endforeach
@@ -229,7 +234,14 @@
                                                             @endif
                                                         @endif
                                                     </div>
+
+
+                                                    <div class="text-center hidden-md">
+                                                        <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item_huit['id']}})"
+                                                            title="Ajouter au panier"> Ajouter au panier</h5>
+                                                    </div>
                                                 </div>
+
                                             </div>
                                         @if( $i>0 && $i%2==0)
                                             </div>
@@ -320,6 +332,12 @@
 
                                             @endif
 
+                                        </div>
+
+
+                                        <div class="text-center hidden-md">
+                                            <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item_article['id']}})"
+                                                title="Ajouter au panier"> Ajouter au panier</h5>
                                         </div>
                                     </div>
                                 </div>

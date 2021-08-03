@@ -20,9 +20,9 @@ class CreateArticlesTable extends Migration
             $table->longText('image');
             $table->string('extrait');
             $table->longText('contenu');
-            $table->string('prix');
+            $table->integer('prix');
             $table->string('slug')->unique()->nullable();
-            $table->string('prix_promo')->nullable();
+            $table->integer('prix_promo');
             $table->timestamps();
         });
     }

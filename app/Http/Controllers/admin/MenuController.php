@@ -7,6 +7,7 @@ use App\Models\InfosGenerale;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class MenuController extends Controller
 {
@@ -22,7 +23,7 @@ class MenuController extends Controller
     }
 
 
-    public function ajouter_menu(Request $request)
+    public function enregistrer_menu(Request $request)
     {
 
         $df = $request->all();
@@ -93,7 +94,14 @@ class MenuController extends Controller
             $menu->etat_promotion = 'false';
             if(!$menu->save()){
                 $aucun_probleme=false;
+            }else{
+
+                $a_slugger = $liste_titre_menu[$i].'-'.$menu->id;
+                $menu->slug = Str::Slug($a_slugger);
+                $menu->save();
+//                dd('ok');
             }
+
         }
 
         if($aucun_probleme){
