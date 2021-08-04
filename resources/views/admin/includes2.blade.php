@@ -273,7 +273,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="text-md-end footer-links d-none d-md-block">
-                            STRATON SYSTEM
+                            <a target="_blank" href="https://straton-system.com"> STRATON SYSTEM </a>
                         </div>
                     </div>
                 </div>

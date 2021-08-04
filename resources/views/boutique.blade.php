@@ -169,21 +169,5 @@
     </main>
     <!-- End of Main -->
 
-    <script>
-        function ajouter_au_panier(id){
-            let id_article = id;
 
-            let quantite = 1;
-
-            $.ajax({
-                method : "GET",
-                url: "/ajouter_au_panier/"+id_article+"/"+quantite,
-                success : function (response){
-                    let taille_panier = $('#taille_panier').text();
-                    let nv_taille = taille_panier*1 + 1;
-                    $('#taille_panier').text(nv_taille);
-                }
-            })
-        }
-    </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Evenement;
 use App\Models\InfosGenerale;
+use App\Models\LivreVente;
 use App\Models\Menu;
 use App\Models\Publicite;
 use Carbon\Carbon;
@@ -26,7 +27,7 @@ class AccueilController extends Controller
 
 
         //present sur l'acceuil
-        $menu_present_sur_accueil = Menu::where('type','=','parent')->where('present_sur_accueil','=',true)->get();
+        $menu_present_sur_accueil = Menu::where('present_sur_accueil','=',true)->get();
 
         //Categorie parente en evidence
 
@@ -51,10 +52,20 @@ class AccueilController extends Controller
         $huit_au_hasard = Article::inRandomOrder()->limit(8)->get();
 //        dd($huit_au_hasard);
 
+
+//        $top_10_ventes = LivreVente::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])
+        $les_plus_demande = LivreVente::select('id_article')
+            ->groupBy('id_article')
+            ->selectRaw('COUNT(*) AS nb_commande')
+            ->selectRaw("SUM(prix_total) as revenu")
+            ->orderByDesc('nb_commande')
+            ->limit(10)
+            ->get();
+
         return view('welcome',compact('infos_generales',
             'liste_categories','menus_principaux','menu_present_sur_accueil','le_panier',
                 'mis_en_avant_un','mis_en_avant_deux','mis_en_avant_trois','mis_en_avant_quatre',
-                'huit_au_hasard','avec_promo'
+                'huit_au_hasard','avec_promo','les_plus_demande'
         ));
     }
 

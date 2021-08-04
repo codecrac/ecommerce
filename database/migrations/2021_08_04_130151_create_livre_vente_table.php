@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArticlesTable extends Migration
+class CreateLivreVenteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('livre_vente', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_menu'); //pour trier les pages
+            $table->integer('id_stat_achat');
+            $table->integer('id_commande');
+            $table->integer('id_article');
+            $table->string('image');
             $table->string('titre');
-            $table->longText('image');
-            $table->string('extrait');
-            $table->longText('contenu');
             $table->integer('prix');
-            $table->integer('prix_promo');
-            $table->string('slug')->unique()->nullable();
-            $table->integer('nb_achat')->default(0);
+            $table->integer('qte');
+            $table->integer('prix_total');
             $table->timestamps();
         });
     }
@@ -35,6 +34,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('livre_vente');
     }
 }

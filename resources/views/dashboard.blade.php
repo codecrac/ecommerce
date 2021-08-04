@@ -132,11 +132,13 @@
                             </div>
                         </form>
 
-                        <h5 class="mb-1 mt-0 fw-normal">Revenu</h5>
+                        <h5 class="mb-1 mt-0 fw-normal">Revenus ( commandes livrées ) </h5>
                         <div class="progress-w-percent">
-                            <span class="progress-value fw-bold"> {{ number_format($stat_chiffre_affaire,0,'',' ') }}  F</span>
+                            @php $pourcentage = $nb_commande_periode_stat * $stat_cmd_liver /100 @endphp
+                            <span class="progress-value fw-bold"> {{ number_format($stat_chiffre_affaire,0,'',' ') }} F</span>
                             <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{$pourcentage}}%;"
+                                     aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
@@ -145,34 +147,39 @@
                             <span class="progress-value fw-bold"> {{ number_format($nb_commande_periode_stat,0,'',' ') }} </span>
                             <div class="progress progress-sm">
                                 <div class="progress-bar"
-                                     role="progressbar" style="width: 72%;" aria-valuenow="72"
+                                     role="progressbar" style="width: 100%;" aria-valuenow="72"
                                      aria-valuemin="0" aria-valuemax="100">
 
                                 </div>
                             </div>
                         </div>
 
-                        <h5 class="mb-1 mt-0 fw-normal">Livrée</h5>
+                        @php $pourcentage = $nb_commande_periode_stat * $stat_cmd_liver /100 @endphp
+                        <h5 class="mb-1 mt-0 fw-normal">Livrée ({{$pourcentage}}%) </h5>
                         <div class="progress-w-percent">
                             <span class="progress-value fw-bold"> {{ number_format($stat_cmd_liver,0,'',' ') }}  </span>
                             <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{$pourcentage}}%;" aria-valuenow="39"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
-                        <h5 class="mb-1 mt-0 fw-normal">Annuler</h5>
+
+                        @php $pourcentage = $nb_commande_periode_stat * $stat_cmd_annuler /100 @endphp
+                        <h5 class="mb-1 mt-0 fw-normal">Annuler ({{$pourcentage}}%)</h5>
                         <div class="progress-w-percent">
                             <span class="progress-value fw-bold"> {{ number_format($stat_cmd_annuler,0,'',' ') }}  </span>
                             <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{$pourcentage}}%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
-                        <h5 class="mb-1 mt-0 fw-normal">Echec de livraison</h5>
+                        @php $pourcentage = $nb_commande_periode_stat * $stat_cmd_echec_de_livraison /100 @endphp
+                        <h5 class="mb-1 mt-0 fw-normal">Echec de livraisonAnnuler ({{$pourcentage}}%)</h5>
                         <div class="progress-w-percent">
                             <span class="progress-value fw-bold"> {{ number_format($stat_cmd_echec_de_livraison,0,'',' ')  }}  </span>
                             <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{$pourcentage}}%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
@@ -183,7 +190,40 @@
             </div> <!-- end col -->
         </div>
 
-
+{{--TOP VENTES--}}
+        <div class="offset-md-1 col-md-10">
+            <div class="card card-h-100">
+                <div class="card-body">
+                    <h4 class="header-title mb-3 text-center">
+                        Top 10 articles les plus demandés
+                        <br/>
+                        [ {{$periode_statistique}} ]
+                    </h4>
+                        <table class="table mb-0">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Produit</th>
+                                        <th>Nombre commandes</th>
+                                        <th>Valeur Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($top_10_ventes as $item_stat_achat )
+                                        @php $id =$item_stat_achat['id_article']; $larticle = \App\Models\Article::find($id); @endphp
+                                        <tr>
+                                            <td> <img src="{{Storage::url($larticle['image'])}}" width="50" height="50" /></td>
+                                            <td>{{$larticle->titre}}</td>
+                                            <td>{{$item_stat_achat->nb_commande}}</td>
+                                            <td> <b>{{number_format($item_stat_achat->revenu,0,'',' ')}} F</b> </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                </table>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div>
+{{--MESSAGE EQUIPE--}}
         <div class="offset-md-2 col-md-8">
             <div class="card card-h-100">
                 <div class="card-body">
@@ -201,7 +241,7 @@
                                 </ul>
                             </h5>
 
-                            <h4 class="text-center">Contactez-nous au 05 55 99 40 41.<h5>
+                            <h4 class="text-center">Contactez-nous <a target="_blank" style="color: #FFC74E" href="https://straton-system.com">ici</a> <h5>
                                     <br/>
 
                                     <h4 class="text-center">

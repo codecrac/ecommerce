@@ -7,7 +7,9 @@ use App\Models\Article;
 use App\Models\Client;
 use App\Models\Commande;
 use App\Models\InfosGenerale;
+use App\Models\LivreVente;
 use App\Models\Menu;
+use App\Models\StatistiqueAchat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -63,7 +65,6 @@ class PanierController extends Controller
 
         Session::put('panier', $le_panier);
         Session::save();
-//        dd($le_panier);
 
         $message = "<div class='alert alert-success'> Article ajouter au panier, <a href='/panier'> <u>Voir le panier</u></a> </div> ";
         return $message;
@@ -145,33 +146,32 @@ class PanierController extends Controller
         $le_panier = Session::get('panier');
         $le_panier = $le_panier;
 
-//        dd($le_panier);
-        return view('panier',compact('infos_generales', 'menus_principaux','le_panier','liste_categories') );
+        $infos_client = Session::has('infos_client') ? Session::get('infos_client') : [];
+//        dd($infos_client);
+
+        return view('panier',compact('infos_generales', 'menus_principaux','le_panier','liste_categories','infos_client') );
     }
 
     public function enregistrer_commande(Request $request){
 
         $le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
-//        dd($le_panier);
-
-//        $le_panier_en_json = json_encode($le_panier['contenu']);
-//        $le_panier_en_bcript = b ($le_panier);
-//        dd($le_panier_en_bcript);
 
         $df = $request->all();
         $route_panier = route('voir_le_panier');
 
 
         $email_client = $df['email'];
-        $le_client = Client::where('email','=',$email_client)->first();
+        $client = Client::where('email','=',$email_client)->first();
 
-        if($le_client ==null) {
+        if($client ==null) {
             $client = new Client();
+        }
             $client->nom = $df['nom_complet'];
             $client->email = $df['email'];
             $client->telephone = $df['telephone'];
             $client->mot_de_passe = $df['mot_de_passe'];
             $client->adresse = $df['adresse'];
+
 
             if(!$client->save()){
                 $message = "<div class='container text-center' style='background-color: #d54e69;padding: 20px;font-weight: bold;margin:5px 10px;'>
@@ -180,9 +180,11 @@ class PanierController extends Controller
                 return redirect()->back()->with('message',$message);
             } // enregistrer le client
             $id_client = $client->id;
-        }else{
-            $id_client = $le_client->id;
-        }
+
+
+        Session::put('infos_client',$client);
+        Session::save();
+
 
         $la_commande = new Commande();
         $le_panier_en_json = json_encode($le_panier['contenu']);
@@ -207,7 +209,6 @@ class PanierController extends Controller
                 Mail::to(["$email_client","$email_entreprise"])->send(new CommandeMail(0,$infos_generales,$la_commande));
                 $mention_email = "email envoyer";
             }catch (\Exception $e){
-//                dd($e->getMessage());
                 $mention_email = "Echec envoi email";
             }
 
@@ -215,6 +216,34 @@ class PanierController extends Controller
                         $mention_email | Votre Commande a bien été enregstrée. <a href='/'>retour à l'accueil</a>
                         </div>";
 
+
+            //STATISTIQUE
+            foreach ($le_panier['contenu'] as $item_article_acheter){
+                $id_article = $item_article_acheter['id_article'];
+
+                //statistique globale
+                $stat_achat = StatistiqueAchat::where('id_article','=',$id_article)->first();
+                if($stat_achat ==null){
+                    $stat_achat = new StatistiqueAchat();
+                }
+
+                $stat_achat->id_article = $id_article;
+                $stat_achat->nb_achat = $stat_achat->nb_achat +1;
+                $stat_achat->save();
+
+                //statistique detaillé
+
+                $livre_vente = new LivreVente();
+                    $livre_vente->id_stat_achat = $la_commande->id;
+                    $livre_vente->id_commande = $stat_achat->id;
+                    $livre_vente->titre = $item_article_acheter['titre'];
+                    $livre_vente->prix = $item_article_acheter['prix'];
+                    $livre_vente->qte = $item_article_acheter['qte'];
+                    $livre_vente->prix_total = $item_article_acheter['prix_total'];
+                    $livre_vente->image = $item_article_acheter['image'];
+                    $livre_vente->id_article = $item_article_acheter['id_article'];
+                $livre_vente->save();
+            }
 
             request()->session()->forget('panier');
         }else{

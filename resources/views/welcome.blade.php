@@ -250,12 +250,12 @@
                                                     </a>
                                                     <div class="product-action-vertical">
                                                         <a href="#" class="btn-product-icon btn-cart w-icon-cart"
-                                                           title="Ajouter au panier"></a>
+                                                           title="Ajouter au panier" onclick="ajouter_au_panier({{$item_huit['id']}})" ></a>
                                                     </div>
                                                 </figure>
                                                 <div class="product-details">
                                                     <h3 class="product-name">
-                                                        <a href="{{route('lire_article',[$item_huit['slug']])}}">{{$item_huit['titre']}}</a>
+                                                        <a class="product-title"href="{{route('lire_article',[$item_huit['slug']])}}">{{$item_huit['titre']}}</a>
                                                     </h3>
                                                     <div class="product-price">
     {{--                                                    <ins class="new-price">$10.73</ins>--}}
@@ -307,35 +307,116 @@
             </div>
             <!-- End of Row -->
 
+        <div class="container mt-3">
 
-{{--        Categorie presente sur accueil--}}
-        <div class="container">
-            @foreach($menu_present_sur_accueil as $item_menu_parent)
-                <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
-                    <h2 class="title"> {{$item_menu_parent['titre']}} </h2>
+                @foreach($menu_present_sur_accueil as $item_menu_parent)
 
-                        <ul class="nav-filters" data-target="#products-{{$item_menu_parent['id']}}">
-                            <li><a href="#" class="nav-filter " data-filter="*"> Tous </a></li>
-                            @php $i=0; @endphp
+                    @if($item_menu_parent['type']=='parent')
+                        <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
+                            <h2 class="title"> {{$item_menu_parent['titre']}} </h2>
+
+                            <ul class="nav-filters" data-target="#products-{{$item_menu_parent['id']}}">
+                                <li><a href="#" class="nav-filter " data-filter="*"> Tous </a></li>
+                                @php $i=0; @endphp
+                                @foreach($item_menu_parent->enfants as $item_categorie)
+                                    <li>
+                                        <a href="#" class="nav-filter" data-filter=".1-{{$item_categorie['id']}}">
+                                            {{$item_categorie['titre']}}
+                                            @if($item_categorie->etat_promotion =='true')
+                                                [ -{{$item_categorie->reduction}}% ]
+                                            @endif
+                                        </a>
+                                    </li>
+                                    @if($i++ ==5 ) @break  @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                       <div class="row grid cols-xl-5 cols-md-4 cols-sm-3 cols-2 appear-animate" id="products-{{$item_menu_parent['id']}}">
+
                             @foreach($item_menu_parent->enfants as $item_categorie)
-                                <li>
-                                    <a href="#" class="nav-filter" data-filter=".1-{{$item_categorie['id']}}">
-                                        {{$item_categorie['titre']}}
-                                        @if($item_categorie->etat_promotion =='true')
-                                            [ -{{$item_categorie->reduction}}% ]
-                                        @endif
-                                    </a>
-                                </li>
-                                @if($i++ ==5 ) @break  @endif
-                            @endforeach
-                        </ul>
-                </div>
-                <!-- End of Filter With Title -->
-                <div class="row grid cols-xl-5 cols-md-4 cols-sm-3 cols-2 appear-animate" id="products-{{$item_menu_parent['id']}}">
+                                @foreach($item_categorie->articles as $item_article)
+                                    <div class="grid-item 1-{{$item_categorie['id']}}">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="{{route('lire_article',[$item_article['slug']])}}">
+                                                    <img src="{{Storage::url($item_article['image'])}}" alt="Product" width="600"
+                                                         height="675" />
+                                                </a>
 
-                    @foreach($item_menu_parent->enfants as $item_categorie)
-                            @foreach($item_categorie->articles as $item_article)
-                            <div class="grid-item 1-{{$item_categorie['id']}}">
+                                                <div class="product-action-vertical">
+                                                    <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Ajouter au panier" onclick="ajouter_au_panier({{$item_article['id']}})"></a>
+                                                    {{-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
+                                                     <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
+                                                     <a href="#" class="btn-product-icon btn-quickview w-icon-search"
+                                                        title="Quick View"></a>--}}
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h3 class="product-name">
+                                                    <a class="product-title" href="{{route('lire_article',[$item_article['slug']])}}"> {{$item_article['titre']}} </a>
+                                                </h3>
+                                                <div class="product-price">
+                                                    @if( $item_article['prix_promo'] !=null &&  !empty($item_article['prix']) )
+
+                                                        @if($item_categorie->etat_promotion =='false')
+                                                            <ins class="new-price"> {{number_format($item_article['prix_promo'],0,'',' ' )}} F </ins>
+                                                        @else
+                                                            <ins class="new-price"> {{number_format( round($item_article['prix_promo']  - ($item_article['prix_promo'] * $item_categorie->reduction/100) ),0,'',' ') }} F </ins>
+                                                        @endif
+
+                                                        <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' )}} F </del>
+                                                    @else
+                                                        @if($item_categorie->etat_promotion =='false')
+                                                            <ins class="new-price"> {{number_format( $item_article['prix'],0,'',' ' )}} F </ins>
+                                                        @else
+                                                            <ins class="new-price"> {{ number_format( round( $item_article['prix']  - ($item_article['prix'] * $item_categorie->reduction/100) ),0,'',' ') }} F </ins>
+
+                                                            <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' ) }} F </del>
+                                                        @endif
+
+                                                    @endif
+
+                                                </div>
+
+
+                                                <div class="text-center hidden-md">
+                                                    <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item_article['id']}})"
+                                                        title="Ajouter au panier"> Ajouter au panier</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End of Product -->
+                                    </div>
+                                @endforeach
+                            @endforeach
+
+                            <div class="grid-space col-xl-5col col-1"></div>
+                        </div>
+                        <!-- End of Grid -->
+                    @else
+                        @php $nb_article = sizeof($item_menu_parent->articles); @endphp
+                        @if($nb_article >0)
+                                <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
+                                <h2 class="title"> {{$item_menu_parent['titre']}} </h2>
+
+                                <ul class="nav-filters" data-target="#products-{{$item_menu_parent['id']}}">
+                                    <li><a href="#" class="nav-filter " data-filter="*"> Tous </a></li>
+                                    @php $i=0; @endphp
+                                    @foreach($item_menu_parent->enfants as $item_categorie)
+                                        <li>
+                                            <a href="#" class="nav-filter" data-filter=".1-{{$item_categorie['id']}}">
+                                                {{$item_categorie['titre']}}
+                                                @if($item_categorie->etat_promotion =='true')
+                                                    [ -{{$item_categorie->reduction}}% ]
+                                                @endif
+                                            </a>
+                                        </li>
+                                        @if($i++ ==5 ) @break  @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                                @foreach($item_categorie->articles as $item_article)
+                            <div class="grid-item 1">
                                 <div class="product text-center">
                                     <figure class="product-media">
                                         <a href="{{route('lire_article',[$item_article['slug']])}}">
@@ -344,32 +425,30 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Ajouter au panier" onclick="ajouter_au_panier({{$item_article['id']}})"></a>
-                                           {{-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart" title="Wishlist"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare" title="Compare"></a>
-                                            <a href="#" class="btn-product-icon btn-quickview w-icon-search"
-                                               title="Quick View"></a>--}}
+                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Ajouter au panier"
+                                               onclick="ajouter_au_panier({{$item_article['id']}})"></a>
                                         </div>
                                     </figure>
                                     <div class="product-details">
                                         <h3 class="product-name">
-                                            <a class="product-title" href="{{route('lire_article',[$item_article['slug']])}}"> {{$item_article['titre']}} </a>
+                                            <a class="product-title" href="{{route('lire_article',[$item_article['slug']])}}">
+                                                {{$item_article['titre']}} </a>
                                         </h3>
                                         <div class="product-price">
                                             @if( $item_article['prix_promo'] !=null &&  !empty($item_article['prix']) )
 
-                                                @if($item_categorie->etat_promotion =='false')
+                                                @if($item_article->categorie_parente->etat_promotion =='false')
                                                     <ins class="new-price"> {{number_format($item_article['prix_promo'],0,'',' ' )}} F </ins>
                                                 @else
-                                                    <ins class="new-price"> {{number_format( round($item_article['prix_promo']  - ($item_article['prix_promo'] * $item_categorie->reduction/100) ),0,'',' ') }} F </ins>
+                                                    <ins class="new-price"> {{number_format( round($item_article['prix_promo']  - ($item_article['prix_promo'] * $item_article->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
                                                 @endif
 
                                                 <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' )}} F </del>
                                             @else
-                                                @if($item_categorie->etat_promotion =='false')
+                                                @if($item_article->categorie_parente->etat_promotion =='false')
                                                     <ins class="new-price"> {{number_format( $item_article['prix'],0,'',' ' )}} F </ins>
                                                 @else
-                                                    <ins class="new-price"> {{ number_format( round( $item_article['prix']  - ($item_article['prix'] * $item_categorie->reduction/100) ),0,'',' ') }} F </ins>
+                                                    <ins class="new-price"> {{ number_format( round( $item_article['prix']  - ($item_article['prix'] * $item_article->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
 
                                                     <del class="old-price">  {{number_format($item_article['prix'],0,'',' ' ) }} F </del>
                                                 @endif
@@ -377,7 +456,6 @@
                                             @endif
 
                                         </div>
-
 
                                         <div class="text-center hidden-md">
                                             <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item_article['id']}})"
@@ -388,12 +466,76 @@
                                 <!-- End of Product -->
                             </div>
                         @endforeach
+                        @endif
+                    @endif
+               @endforeach
+
+        </div>
+
+{{--        Categorie presente sur accueil--}}
+        <div class="container mt-3">
+            @if(sizeof($les_plus_demande)>0)
+                <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
+                    <h2 class="title"> Les plus demandés </h2>
+                </div>
+                <!-- End of Filter With Title -->
+                <div class="row grid cols-xl-5 cols-md-4 cols-sm-3 cols-2 appear-animate">
+
+                    @foreach($les_plus_demande as $item_article_top_10)
+                        @php $item_article_top_10 = \App\Models\Article::find($item_article_top_10['id_article']); @endphp
+                        <div class="grid-item 1">
+                                <div class="product text-center">
+                                    <figure class="product-media">
+                                        <a href="{{route('lire_article',[$item_article_top_10['slug']])}}">
+                                            <img src="{{Storage::url($item_article_top_10['image'])}}" alt="Product" width="600"
+                                                 height="675" />
+                                        </a>
+
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Ajouter au panier" onclick="ajouter_au_panier({{$item_article_top_10['id']}})"></a>
+                                        </div>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h3 class="product-name">
+                                            <a class="product-title" href="{{route('lire_article',[$item_article_top_10['slug']])}}"> {{$item_article_top_10['titre']}} </a>
+                                        </h3>
+                                        <div class="product-price">
+                                            @if( $item_article_top_10['prix_promo'] !=null &&  !empty($item_article_top_10['prix']) )
+
+                                                @if($item_article_top_10->categorie_parente->etat_promotion =='false')
+                                                    <ins class="new-price"> {{number_format($item_article_top_10['prix_promo'],0,'',' ' )}} F </ins>
+                                                @else
+                                                    <ins class="new-price"> {{number_format( round($item_article_top_10['prix_promo']  - ($item_article_top_10['prix_promo'] * $item_article_top_10->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
+                                                @endif
+
+                                                <del class="old-price">  {{number_format($item_article_top_10['prix'],0,'',' ' )}} F </del>
+                                            @else
+                                                @if($item_article_top_10->categorie_parente->etat_promotion =='false')
+                                                    <ins class="new-price"> {{number_format( $item_article_top_10['prix'],0,'',' ' )}} F </ins>
+                                                @else
+                                                    <ins class="new-price"> {{ number_format( round( $item_article_top_10['prix']  - ($item_article_top_10['prix'] * $item_article_top_10->categorie_parente->reduction/100) ),0,'',' ') }} F </ins>
+
+                                                    <del class="old-price">  {{number_format($item_article_top_10['prix'],0,'',' ' ) }} F </del>
+                                                @endif
+
+                                            @endif
+
+                                        </div>
+
+                                        <div class="text-center hidden-md">
+                                            <h5 style="border: 1px solid #ccc;padding: 5px;" class="btn-cart" onclick="ajouter_au_panier({{$item_article_top_10['id']}})"
+                                                title="Ajouter au panier"> Ajouter au panier</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End of Product -->
+                        </div>
                     @endforeach
 
                     <div class="grid-space col-xl-5col col-1"></div>
                 </div>
                 <!-- End of Grid -->
-                @endforeach
+                @endif
         </div>
     </main>
     <!-- End of Main -->

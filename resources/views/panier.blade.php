@@ -60,7 +60,7 @@
                                                 </div>
                                             </td>
                                             <td class="product-name">
-                                                <span class="amount"> {{$item_article['prix']}} F </span>
+                                                <span class="amount"> {{number_format($item_article['prix'],0,'',' ')}} F </span>
                                             </td>
                                             <td class="">
                                                 <div class="input-group">
@@ -68,7 +68,7 @@
                                                 </div>
                                             </td>
                                             <td class="product-subtotal">
-                                                <span class="amount">{{$item_article['prix_total']}} F</span>
+                                                <span class="amount">{{number_format($item_article['prix_total'],0,'',' ')}} F</span>
                                             </td>
                                          </tr>
                                     @endforeach
@@ -101,7 +101,7 @@
                                 <h3 class="cart-title text-uppercase">Finaliser ma commande</h3>
                                 <div class="cart-subtotal d-flex align-items-center justify-content-between">
                                     <label class="ls-25">Total</label>
-                                    <span class="product-price"> {{$le_panier['grand_total']}} F </span>
+                                    <span class="product-price"> {{number_format($le_panier['grand_total'],0,'',' ')}} F </span>
                                 </div>
 
                                 <hr class="divider">
@@ -109,16 +109,16 @@
 
                                 <form method="post" action="{{route('enregistrer_commande')}}">
                                         <h5> Nom complet </h5>
-                                        <input class="form-control" type="text" name="nom_complet" required>
+                                        <input class="form-control" type="text" name="nom_complet" value="{{$infos_client->nom}}" required>
                                     <br/>
                                         <h5> Telephone </h5>
-                                        <input class="form-control" type="number" name="telephone" required>
+                                        <input class="form-control" type="number" name="telephone" required value="{{$infos_client->telephone}}">
                                     <br/>
                                         <h5> Ou souhaitez-vous être livrer ? </h5>
-                                        <input class="form-control" type="text" name="adresse" required>
+                                        <input class="form-control" type="text" name="adresse" required  value="{{$infos_client->adresse}}">
                                     <br/>
                                         <h5> Email </h5>
-                                        <input class="form-control" type="email" name="email" required>
+                                        <input class="form-control" type="email" name="email" required  value="{{$infos_client->email}}">
                                     <br/>
                                         <h5 style="display: none"> Mot de passe </h5>
                                         <input style="display: none" class="form-control" type="password" name="mot_de_passe" value="djd" required>
@@ -127,7 +127,7 @@
 
                                     <div class="order-total d-flex justify-content-between align-items-center">
                                         <label>Total</label>
-                                        <span class="product-price"> {{$le_panier['grand_total']}} F </span>
+                                        <span class="product-price"> {{number_format($le_panier['grand_total'],0,'',' ')}} F </span>
                                     </div>
 
 

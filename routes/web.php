@@ -18,7 +18,9 @@ use App\Models\Article;
 use App\Models\Client;
 use App\Models\Commande;
 use App\Models\InfosGenerale;
+use App\Models\LivreVente;
 use App\Models\Menu;
+use App\Models\StatistiqueAchat;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
@@ -92,11 +94,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     }
 
     //GERER L'INTERVALE DU BETWEEN POUR INCURE LES JOURS DANS LA RECHERCHE
-        $date_debut_intervale_forme =  Carbon::createFromFormat('Y-m-d', $_GET['date_debut']);
-        $date_debut_intervale_forme = $date_debut_intervale_forme->addDays(-1);
+        $date_debut_intervale_forme =  Carbon::createFromFormat('Y-m-d', $date_debut);
+//        $date_debut_intervale_forme = $date_debut_intervale_forme->addDays(-1);
 
-        $date_fin_intervale_forme =  Carbon::createFromFormat('Y-m-d', $_GET['date_fin']);
-        $date_fin_intervale_forme = $date_fin_intervale_forme->addDays(1);
+        $date_fin_intervale_forme =  Carbon::createFromFormat('Y-m-d', $date_fin);
+//        $date_fin_intervale_forme = $date_fin_intervale_forme->addDays(1);
 
 
     $nb_commande_periode_stat = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->count();
@@ -107,9 +109,21 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $stat_cmd_echec_de_livraison = Commande::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])->where('etat','=','echec_de_livraison')->count();
 
 
+
+    $top_10_ventes = LivreVente::whereBetween('created_at',[$date_debut_intervale_forme,$date_fin_intervale_forme])
+        ->select('id_article')
+        ->groupBy('id_article')
+        ->selectRaw('COUNT(*) AS nb_commande')
+        ->selectRaw("SUM(prix_total) as revenu")
+        ->orderByDesc('nb_commande')
+        ->limit(10)
+        ->get();
+
+
     return view('dashboard',compact('liste_menus_simple',
         'nb_client','nb_commandes','nb_menus_simples','nb_menus_parent','nb_article','infos_generales',
-    'periode_statistique','date_debut','date_fin','stat_chiffre_affaire','nb_commande_periode_stat','stat_cmd_liver','stat_cmd_echec_de_livraison','stat_cmd_annuler'
+        'periode_statistique','date_debut','date_fin','date_debut_intervale_forme','date_fin_intervale_forme','stat_chiffre_affaire','nb_commande_periode_stat','stat_cmd_liver',
+        'stat_cmd_echec_de_livraison','stat_cmd_annuler','top_10_ventes'
     ));
 })->name('dashboard');
 
