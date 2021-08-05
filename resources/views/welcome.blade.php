@@ -52,18 +52,32 @@
 {{--        Categorie en evidence--}}
             <div class="row grid grid-float pt-2 banner-grid mb-9 appear-animate">
 {{--                UN--}}
+                @php
+                    $bg1 = $mis_en_avant_un['image_illustration'];
+                    if($bg1==null){
+                        if($mis_en_avant_un->id_parent == null){
+                            $bg1 = $infos_generales['banniere'];
+                        }else{
+                            $bg1 = $mis_en_avant_un->parent->image_illustration ;
+                        }
+                        if($bg1 == null){
+                            $bg1 = $infos_generales['banniere'];
+                        }
+                    }
+
+                @endphp
                 <div class="grid-item col-lg-6 height-x2">
                     <div class="banner banner-fixed banner-lg br-sm">
                         <figure>
-                            <img src="{{Storage::url($mis_en_avant_un['image_illustration'])}}" alt="Banner" width="670"
-                                 height="450" style="background-color: #E3E7EA;" />
+                            <img src="{{Storage::url($bg1)}}" alt="Banner" width="670"
+                                 height="450" style="background-color: #fff;" />
                         </figure>
                         <div class="banner-content y-50" style="background-color: #28292daa;padding: 10%;border-radius: 5px">
 
                             <h3 class="banner-title text-capitalize text-white">{{$mis_en_avant_un['titre']}}</h3>
-                            @if($mis_en_avant_un['etat_promotion'] =='true' )
+                            @if($mis_en_avant_un['etat_promotion'] =='true' && $mis_en_avant_un['reduction'] >0 )
                                 <h5 class="banner-subtitle text-capitalize font-weight-normal mb-0 ls-25 text-white text-right">
-                                    <small>Vente flash</small> <strong class="text-secondary text-uppercase">-{{$mis_en_avant_un['reduction']}}%</strong>
+                                    <small>jusqu'à</small> <strong class="text-secondary text-uppercase">-{{$mis_en_avant_un['reduction']}}%</strong>
                                 </h5>
                             @endif
                             <br/>
@@ -74,17 +88,31 @@
                     </div>
                 </div>
 {{--                DEUX--}}
+                @php
+                    $bg2 = $mis_en_avant_deux['image_illustration'];
+                    if($bg2==null){
+                        if($mis_en_avant_deux->id_parent == null){
+                            $bg2 = $infos_generales['banniere'];
+                        }else{
+                            $bg2 = $mis_en_avant_deux->parent->image_illustration ;
+                        }
+                        if($bg2 == null){
+                            $bg2 = $infos_generales['banniere'];
+                        }
+                    }
+
+                @endphp
                 <div class="grid-item col-lg-6 height-x1">
                     <div class="banner banner-fixed banner-md br-sm">
                         <figure>
-                            <img src="{{Storage::url($mis_en_avant_deux['image_illustration'])}}" alt="Banner" width="670"
-                                 height="450" style="background-color: #2D2E32;" />
+                            <img src="{{Storage::url($bg2)}}" alt="Banner" width="670"
+                                 height="450" style="background-color: #fff;" />
                         </figure>
                         <div class="banner-content" style="background-color: #28292daa;padding:4%;border-radius: 5px">
                             <h3 class="banner-title text-white ls-25">
                                 {{$mis_en_avant_deux['titre']}}
-                                    @if($mis_en_avant_deux['etat_promotion'] =='true' )
-                                        ( {{$mis_en_avant_deux['reduction']}}% )
+                                    @if($mis_en_avant_deux['etat_promotion'] =='true' && $mis_en_avant_deux['reduction'] >0)
+                                        <span  style="color: orange">( - {{$mis_en_avant_deux['reduction']}}% )</span>
                                     @endif
                             </h3>
                             <a href="{{route('boutique',[$mis_en_avant_deux['slug']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
@@ -94,17 +122,31 @@
                     </div>
                 </div>
 {{--                TROIS--}}
+                @php
+                    $bg3 = $mis_en_avant_trois['image_illustration'];
+                    if($bg3==null){
+                        if($mis_en_avant_trois->id_parent == null){
+                            $bg3 = $infos_generales['banniere'];
+                        }else{
+                            $bg3 = $mis_en_avant_trois->parent->image_illustration ;
+                        }
+                        if($bg3 == null){
+                            $bg3 = $infos_generales['banniere'];
+                        }
+                    }
+
+                @endphp
                 <div class="grid-item col-sm-6 col-lg-3 height-x1">
-                    <div class="banner banner-fixed banner-sm br-sm">
+                    <div class="banner banner-fixed banner-sm br-sm" style="background-color: #fff">
                         <figure>
-                            <img src="{{Storage::url($mis_en_avant_trois['image_illustration'])}}" alt="Banner" width="330"
-                                 height="215" style="background-color: #181818;" />
+                            <img src="{{Storage::url($bg3)}}" alt="Banner" width="330"
+                                 height="215" style="background-color: #fff;" />
                         </figure>
                         <div class="banner-content x-50 y-50 w-100 text-center" style="background-color: #28292daa;padding:4%;border-radius: 5px">
                             <h4 class="text-white">{{$mis_en_avant_trois['titre']}}</h4>
-                            @if($mis_en_avant_trois['etat_promotion'] =='true' )
+                            @if($mis_en_avant_trois['etat_promotion'] =='true'  && $mis_en_avant_trois['reduction'] >0)
                                 <div class="banner-price-info font-weight-normal text-white mb-3">
-                                    jusqu'a <strong class="text-uppercase">{{$mis_en_avant_trois['reduction']}}% de reduction</strong>
+                                    jusqu'a <strong class="text-uppercase text-danger" style="color: orange">{{$mis_en_avant_trois['reduction']}}% de reduction</strong>
                                 </div>
                             @endif
 
@@ -113,17 +155,32 @@
                     </div>
                 </div>
 {{--                QUATRE--}}
+                @php
+                    $bg4 = $mis_en_avant_quatre['image_illustration'];
+                    if($bg4==null){
+                        if($mis_en_avant_quatre->id_parent == null){
+                            $bg4 = $infos_generales['banniere'];
+                        }else{
+                            $bg4 = $mis_en_avant_quatre->parent->image_illustration ;
+                        }
+                        if($bg4 == null){
+                            $bg4 = $infos_generales['banniere'];
+                        }
+                    }
+
+                @endphp
                 <div class="grid-item col-sm-6 col-lg-3 height-x1">
                     <div class="banner banner-fixed banner-sm br-sm">
                         <figure>
-                            <img src="{{Storage::url($mis_en_avant_quatre['image_illustration'])}}" alt="Banner" width="330"
-                                 height="215" style="background-color: #A3A8A6;" />
+                            <img src="{{Storage::url($bg4)}}" alt="Banner" width="330"
+                                 height="215" style="background-color: #fff;" />
                         </figure>
                         <div class="banner-content" style="background-color: #28292daa;padding:4%;border-radius: 5px">
-                            @if($mis_en_avant_quatre['etat_promotion'] =='true' )
-                                <h5 class="banner-subtitle text-uppercase font-weight-bold">
-                                    {{$mis_en_avant_quatre['reduction']}}% de reduction
-                                </h5>
+
+                            @if($mis_en_avant_quatre['etat_promotion'] =='true'  && $mis_en_avant_quatre['reduction'] >0)
+                                <h6 class="banner-subtitle text-uppercase font-weight-bold" style="color: orange">
+                                    [ {{$mis_en_avant_quatre['reduction']}}% de reduction ]
+                                </h6>
                             @endif
                             <h3 class="banner-title text-capitalize ls-25 text-white"> {{$mis_en_avant_quatre['titre']}} </h3>
                             <a href="{{route('boutique',[$mis_en_avant_quatre['slug']])}}" class="btn btn-white btn-link btn-underline btn-icon-right">
@@ -136,7 +193,7 @@
             <!-- End of Banner Grid -->
 
 {{--        TOPS DEALS--}}
-            <div class="row appear-animate">
+            <div class="row appear-animate" style="padding: 8px">
                 <div class="col-lg-4 col-md-5 mb-6">
                     <div class="product-lg br-sm">
                         <h2 class="title title-underline mb-4"> Tops Deals </h2>
@@ -396,32 +453,17 @@
                     @else
                         @php $nb_article = sizeof($item_menu_parent->articles); @endphp
                         @if($nb_article >0)
-                                <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
+                            <div class="filter-with-title title-underline mb-4 pb-2 appear-animate">
                                 <h2 class="title"> {{$item_menu_parent['titre']}} </h2>
-
-                                <ul class="nav-filters" data-target="#products-{{$item_menu_parent['id']}}">
-                                    <li><a href="#" class="nav-filter " data-filter="*"> Tous </a></li>
-                                    @php $i=0; @endphp
-                                    @foreach($item_menu_parent->enfants as $item_categorie)
-                                        <li>
-                                            <a href="#" class="nav-filter" data-filter=".1-{{$item_categorie['id']}}">
-                                                {{$item_categorie['titre']}}
-                                                @if($item_categorie->etat_promotion =='true')
-                                                    [ -{{$item_categorie->reduction}}% ]
-                                                @endif
-                                            </a>
-                                        </li>
-                                        @if($i++ ==5 ) @break  @endif
-                                    @endforeach
-                                </ul>
                             </div>
-                                @foreach($item_categorie->articles as $item_article)
-                            <div class="grid-item 1">
+                        <div class="row grid cols-xl-5 cols-md-4 cols-sm-3 cols-2 appear-animate" id="products-{{$item_menu_parent['id']}}">
+                            @foreach($item_menu_parent->articles as $item_article)
+                                <div class="grid-item 1-1">
                                 <div class="product text-center">
                                     <figure class="product-media">
                                         <a href="{{route('lire_article',[$item_article['slug']])}}">
-                                            <img src="{{Storage::url($item_article['image'])}}" alt="Product" width="600"
-                                                 height="675" />
+                                            <img src="{{Storage::url($item_article['image'])}}" alt="Product" width="250"
+                                                 height="140" />
                                         </a>
 
                                         <div class="product-action-vertical">
@@ -465,8 +507,10 @@
                                 </div>
                                 <!-- End of Product -->
                             </div>
-                        @endforeach
-                        @endif
+                            @endforeach
+                                <div class="grid-space col-xl-5col col-1"></div>
+                        </div>
+                    @endif
                     @endif
                @endforeach
 
@@ -539,7 +583,7 @@
         </div>
     </main>
     <!-- End of Main -->
-    <!-- Trigger/Open The Modal -->
+
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -596,9 +640,8 @@
         }
 
         setTimeout(function (){
-            if ($.cookie('popup_email') == null) {
+            if ($.cookie('popup_email_ok') == null) {
                 modal.style.display = "block";
-                $.cookie('popup_email', '12');
             }
         },200);
     </script>

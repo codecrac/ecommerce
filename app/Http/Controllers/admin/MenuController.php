@@ -46,47 +46,26 @@ class MenuController extends Controller
             $chemin_destination = storage_path('app/public/images');
             $nom_image_illustration ="";
 
-            /*if($request->hasFile('icone')){
-
-                $icones = $request->file('icone');
-
-                $icone = $icones[$i];
-
-
-                $extension = $icone->getClientOriginalExtension();
-
-
-                if(in_array($extension,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
-                    $time2 = date('dhms');
-
-                    $nom_icone = 'ic_'. $time2.'.'.$extension;
-
-                    $icone->move($chemin_destination,$nom_icone);
-
-                    $url_icone = $destination.$nom_icone;
-
-                    $menu->icone = $url_icone;
-                }
-            }*/
-
             if($request->hasFile('illustration')){
 
                 $illustrations = $request->file('illustration');
 
-                $illustration = $illustrations[$i];
+                if(isset($illustrations[$i])){
+                    $illustration = $illustrations[$i];
 
-                $extension2 = $illustration->getClientOriginalExtension();
+                    $extension2 = $illustration->getClientOriginalExtension();
 
-                if(in_array($extension2,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
-                    $time2 = date('dhms');
+                    if(in_array($extension2,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
+                        $time2 = date('dhms');
 
-                    $nom_image_illustration = 'ill_'. $time2.'.'.$extension2;
+                        $nom_image_illustration = $time2. '-' .Str::slug($illustration->getClientOriginalName()).'.'.$extension2;;
 
-                    $illustration->move($chemin_destination,$nom_image_illustration);
+                        $illustration->move($chemin_destination,$nom_image_illustration);
 
-                    $url_image = $destination.$nom_image_illustration;
+                        $url_image = $destination.$nom_image_illustration;
 
-                    $menu->image_illustration = $url_image;
+                        $menu->image_illustration = $url_image;
+                    }
                 }
             }
 
@@ -127,27 +106,7 @@ class MenuController extends Controller
         $destination = 'images/';
         $chemin_destination = storage_path('app/public/images');
         $nom_image_illustration ="";
-        /*if($request->hasFile('icone')){
 
-            $icone = $request->file('icone');
-
-            $extension = $icone->getClientOriginalExtension();
-
-            if(in_array($extension,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
-                $time2 = date('dhms');
-
-                $nom_icone = 'ic_'. $time2.'.'.$extension;
-
-                $icone->move($chemin_destination,$nom_icone);
-
-                $url_icone = $destination.$nom_icone;
-                $url_image = $destination.$nom_image_illustration;
-
-                $menu->reduction = 0;
-                $menu->etat_promotion = 'false';
-                $menu->icone = $url_icone;
-            }
-        }*/
 
         if($request->hasFile('illustration')){
 
@@ -158,7 +117,7 @@ class MenuController extends Controller
             if(in_array($extension2,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
                 $time2 = date('dhms');
 
-                $nom_image_illustration = 'ill_'. $time2.'.'.$extension2;
+                $nom_image_illustration = $time2. '-' .Str::slug($illustration->getClientOriginalName()) .'.'.$extension2;
 
                 $illustration->move($chemin_destination,$nom_image_illustration);
 
@@ -233,7 +192,7 @@ class MenuController extends Controller
         $etat_toute_promotion = $df['etat_toute_promotion'];
 
 
-        if(  DB::table('menus')->update(array('etat_promotion'=>$etat_toute_promotion)) ){
+        if(  DB::table('menus')->where('type','=','menu_simple')->update(array('etat_promotion'=>$etat_toute_promotion)) ){
             $message = "<div class='alert alert-success text-center'> Les Changements ont bien été enregistrés </div>";
             return redirect()->back()->with('message',$message);
         }else{

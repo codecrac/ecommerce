@@ -18,7 +18,7 @@ class CreateCommandesTable extends Migration
             $table->integer('id_client');
             $table->integer('nb_article');
             $table->integer('valeur_total');
-            $table->integer('etat')->default('attente');
+            $table->string('etat')->default('attente');
             $table->json('panier');
             $table->timestamps();
         });

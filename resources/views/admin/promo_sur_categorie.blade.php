@@ -20,7 +20,7 @@
                 <h4 class="text-center">Modifier etat de toute les promotions </h4>
 
                 <div class="form-group p-1">
-                    <select name="etat_toute_promotion" class="form-control">
+                    <select name="etat_toute_promotion" class="form-control" required>
                         <option value> Choisir... </option>
                         <option value="true"> Tout Activer </option>
                         <option value="false"> Tout Desactiver </option>

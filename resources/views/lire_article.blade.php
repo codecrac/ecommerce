@@ -125,7 +125,7 @@
                         <div class="tab tab-nav-boxed tab-nav-underline product-tabs mt-3">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a href="#product-tab-description" class="nav-link active">Description</a>
+                                    <a href="#product-tab-description" class="nav-link active">Details</a>
                                 </li>
                             </ul>
                             <div class="tab-content">

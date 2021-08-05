@@ -64,7 +64,7 @@
                                             </td>
                                             <td class="">
                                                 <div class="input-group">
-                                                    <input class="form-control" name="qte[]" type="number" min="1" value="{{$item_article['qte']}}" max="100000">
+                                                    <input autocomplete="off" class="form-control" name="qte[]" type="number" min="1" value="{{$item_article['qte']}}" max="100000">
                                                 </div>
                                             </td>
                                             <td class="product-subtotal">
@@ -109,19 +109,19 @@
 
                                 <form method="post" action="{{route('enregistrer_commande')}}">
                                         <h5> Nom complet </h5>
-                                        <input class="form-control" type="text" name="nom_complet" value="{{$infos_client->nom}}" required>
+                                        <input autocomplete="off" class="form-control" type="text" name="nom_complet" value="{{$infos_client->nom}}" required>
                                     <br/>
                                         <h5> Telephone </h5>
-                                        <input class="form-control" type="number" name="telephone" required value="{{$infos_client->telephone}}">
+                                        <input autocomplete="off" class="form-control" type="number" name="telephone" required value="{{$infos_client->telephone}}">
                                     <br/>
                                         <h5> Ou souhaitez-vous être livrer ? </h5>
-                                        <input class="form-control" type="text" name="adresse" required  value="{{$infos_client->adresse}}">
+                                        <input autocomplete="off" class="form-control" type="text" name="adresse" required  value="{{$infos_client->adresse}}">
                                     <br/>
                                         <h5> Email </h5>
-                                        <input class="form-control" type="email" name="email" required  value="{{$infos_client->email}}">
+                                        <input autocomplete="off" class="form-control" type="email" name="email" required  value="{{$infos_client->email}}">
                                     <br/>
                                         <h5 style="display: none"> Mot de passe </h5>
-                                        <input style="display: none" class="form-control" type="password" name="mot_de_passe" value="djd" required>
+                                        <input autocomplete="off" style="display: none" class="form-control" type="password" name="mot_de_passe" value="djd" required>
 
 
 

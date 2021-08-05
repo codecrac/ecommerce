@@ -145,6 +145,12 @@
                     </li>
 {{--                @endif--}}
 
+                <li class="side-nav-item">
+                    <a href="{{route('liste_des_clients')}}" class="side-nav-link">
+                        <i class="uil-calendar-alt"></i>
+                        <span> Liste Clients </span>
+                    </a>
+                </li>
                 @if( Auth::user()->evenement =='true' )
                     <li class="side-nav-item">
                         <a href="{{route('newsletter')}}" class="side-nav-link">

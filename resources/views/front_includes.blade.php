@@ -60,7 +60,7 @@
                     <a href="#" class="mobile-menu-toggle  w-icon-hamburger">
                     </a>
                     <a href="{{route('accueil')}}" class="logo ml-lg-0">
-                        <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo" width="144" height="45"/>
+                        <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo" width="45" height="45"/>
                     </a>
                     <form method="post" action="{{route('resultat_recherche')}}"
                           class="input-wrapper header-search hs-expanded hs-round d-none d-md-flex">
@@ -185,8 +185,7 @@
                         </nav>
                     </div>
                     <div class="header-right">
-                        <a href="{{route('boutique',[$item_categorie['slug']])}}" class="d-xl-show"> Toutes
-                            categories</a>
+                        <a href="{{route('boutique',[$item_categorie['slug']])}}" class="d-xl-show"> Toutes categories</a>
                         {{--                        <a href="#"><i class="w-icon-sale"></i>Daily Deals</a>--}}
                     </div>
                 </div>
@@ -243,7 +242,7 @@
                     <div class="col-lg-4 col-sm-6">
                         <div class="widget widget-about">
                             <a href="demo1.html" class="logo-footer">
-                                <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo-footer" width="144"
+                                <img src="{{Storage::url($infos_generales['logo'])}}" alt="logo-footer" width="45"
                                      height="45"/>
                             </a>
                             <div class="widget-body">
@@ -276,6 +275,8 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-8 col-md-8 footer-middle">
+
+                        <h6 class="category-name"> <a href="{{route('apropos')}}"> Qui sommes nous </a> </h6>
                         @foreach($menus_principaux as $item)
                             <div>
                                 <div class="category-box mt-3">
@@ -419,6 +420,7 @@
             success: function (reponse) {
                 $('#reponse_newsletter').html(reponse);
                 setTimeout(function () {
+                    $.cookie('popup_email_ok', '12');
                     $('#btn_close').click();
                 }, 1000);
 

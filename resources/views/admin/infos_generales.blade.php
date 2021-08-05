@@ -52,7 +52,7 @@
 
                             <br/>
                             <h4>Lien page Facebook</h4>
-                            <input required type="text" name="lien_fb" class="form-control" value="{{$infos_generales['lien_fb']}}">
+                            <input type="text" name="lien_fb" class="form-control" value="{{$infos_generales['lien_fb']}}">
 
                             <br/>
                             <h4>Lien page linkedin</h4>
@@ -65,14 +65,6 @@
                             <br/>
                             <h4>Lien page twitter</h4>
                             <input  type="text" name="lien_twitter" class="form-control" value="{{$infos_generales['lien_twitter']}}">
-
-                            <br/>
-                            <h4>Afficher les auteur article sur la page d'accueil</h4>
-                            <select required class="form-control" name="afficher_auteur_article">
-                                <option value="{{$infos_generales['afficher_auteur_article']}}">{{$infos_generales['afficher_auteur_article']}}</option>
-                                <option value="non">Non</option>
-                                <option value="oui">Oui</option>
-                            </select>
 
                             <div class="container text-center">
                                 @if( Auth::user()->modifier =='true' )

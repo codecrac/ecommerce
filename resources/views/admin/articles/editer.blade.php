@@ -27,15 +27,50 @@
                 <h3> Modifier un article</h3>
             </div>
             <div class="card-body">
+
+
+                <div class="row">
+                    @foreach($larticle->photos_en_plus as $item_image)
+                        <div style="border: 1px solid #ccc" class="col-md-3">
+                            <form method="post" action="{{route('effacer_image_galerie',[$item_image['id']])}}">
+                                <img src="{{Storage::url($item_image['image'])}}" width="100px" height="100px" />
+                                <br/>
+                                @method('delete')
+                                @csrf
+                                <button type="submit"> retirer </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+
                 <form method="post" action="{{route('modifier_article',[$larticle['id']])}}" enctype="multipart/form-data">
 
                     <div class="row grid-margin">
 
                         <div class="form-group pt-3 col-12">
                             <div class="row">
-{{--                                <h4>Image Illustration <img src="data:image/jpeg;base64,{{$larticle['image']}}" width="100px" height="100px">  </h4>--}}
                                 <h4>Image Illustration <img src="{{Storage::url("$larticle->image")}}" width="100px" height="100px">  </h4>
                                 <input type="file" name="image" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-12">
+                            <div class="row">
+
+                                <h4>Ajouter d'autre image</h4>
+                                <input type="file" multiple name="gallerie[]" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group pt-3 col-12">
+                            <div class="row">
+                                <h4>Categorie</h4>
+                                <select class="form-control" name="id_categorie" required>
+                                    <option value="{{$larticle->categorie_parente->id}}" >{{$larticle->categorie_parente->titre}}</option>
+                                    @foreach($liste_menus_simple as $item_menu_simple)
+                                        <option value="{{$item_menu_simple['id']}}"> {{$item_menu_simple['titre']}} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

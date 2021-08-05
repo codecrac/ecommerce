@@ -11,14 +11,27 @@
 
 
                 <!-- Start of Shop Banner -->
+                @php
+                    $bg = $la_categorie['image_illustration'];
+                    if($bg==null){
+                        if($la_categorie->id_parent == null){
+                            $bg = $infos_generales['banniere'];
+                        }else{
+                            $bg = $la_categorie->parent->image_illustration ;
+                        }
+                        if($bg == null){
+                            $bg = $infos_generales['banniere'];
+                        }
+                    }
+
+                @endphp
                 <div class="shop-default-banner banner d-flex align-items-center mb-5 br-xs"
                      style="
-                         background-image: url({{Storage::url( ($la_categorie['image_illustration'] !=null)
-                                                                ? $la_categorie['image_illustration'] : $infos_generales['banniere']  )}});
+                         background-image: url({{Storage::url( $bg )}});
                         background-color: #FFC74E;
                          ">
                     <div class="banner-content" style="background-color: #28292daa;padding:25px;border-radius: 5px">
-                        <h6 class="text-white font-weight-bold">{{$la_categorie->parent->titre }}</h6>
+                        <h6 class="text-white font-weight-bold">{{ ($la_categorie->parent !=null )? $la_categorie->parent->titre : '' }}</h6>
                         <h3 class="banner-title text-white
                          text-uppercase font-weight-bolder ls-normal">
                             {{$la_categorie['titre']}}

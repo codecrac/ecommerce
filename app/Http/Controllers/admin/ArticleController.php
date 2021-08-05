@@ -63,7 +63,7 @@ class ArticleController extends Controller
 
             if(in_array($extension,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
                 $time2 = date('dhms');
-                $nom_image_illustration =  $time2.'.'.$extension;
+                $nom_image_illustration =  $time2. '-' .Str::slug($image->getClientOriginalName()).'.'.$extension;
                 $image->move($chemin_destination,$nom_image_illustration);
                 $url_image = $destination.$nom_image_illustration;
 
@@ -85,7 +85,7 @@ class ArticleController extends Controller
 
                     if(in_array($extension,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
                         $time2 = date('dhms');
-                        $nom_image_illustration =  $time2.'.'.$extension;
+                        $nom_image_illustration =  $time2. '-' .Str::slug($item_image_gallerie->getClientOriginalName()).'.'.$extension;
                         $item_image_gallerie->move($chemin_destination,$nom_image_illustration);
                         $url_image = $destination.$nom_image_illustration;
 
@@ -111,20 +111,13 @@ class ArticleController extends Controller
     {
         $df = $request->all();
         $article = Article::find($id_article);
+        $article->id_menu = $df['id_categorie'];
         $article->titre = $df['titre'];
         $article->prix = $df['prix'];
         $article->prix_promo = $df['prix_promo'];
         $article->extrait = $df['extrait'];
         $article->contenu = $df['contenu'];
 
-
-        //stocker en base64
-    /*    if($request->hasFile('image')){
-            $limage = $request->file('image');
-            $path = $limage->getRealPath();
-            $image_base64 = base64_encode(file_get_contents($path));
-            $article->image = $image_base64;
-        }*/
 
         $destination = 'images/';
         $chemin_destination = storage_path('app/public/images');
@@ -137,13 +130,33 @@ class ArticleController extends Controller
 
             if(in_array($extension,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
                 $time2 = date('dhms');
-                $nom_image_illustration =  $time2. '-' .$image->getClientOriginalName();
+                $nom_image_illustration =  $time2. '-' .Str::slug($image->getClientOriginalName()).'.'.$extension;
                 $image->move($chemin_destination,$nom_image_illustration);
                 $url_image = $destination.$nom_image_illustration;
 
 //                dd($nom_image_illustration);
                 $article->image = $url_image;
             }
+        }
+
+        if($request->hasFile('gallerie')){
+            $gallery_image = $request->file('gallerie');
+            foreach($gallery_image as $item_image_gallerie):
+                $extension = $item_image_gallerie->getClientOriginalExtension();
+
+                if(in_array($extension,['jpg','JPG','png','PNG','jpeg','JPEG','gif','GIF'])){
+                    $time2 = date('dhms');
+                    $nom_image_illustration =  $time2. '-' .Str::slug($item_image_gallerie->getClientOriginalName()).'.'.$extension;
+                    $item_image_gallerie->move($chemin_destination,$nom_image_illustration);
+                    $url_image = $destination.$nom_image_illustration;
+
+                    $image_gallerie = new Gallerie();
+                    $image_gallerie->id_article = $article->id;
+                    $image_gallerie->image = $url_image;
+                    $image_gallerie->save();
+                }
+            endforeach;
+
         }
 
         if($article->save()){
@@ -161,6 +174,19 @@ class ArticleController extends Controller
 
         if($larticle->delete()){
             $message = "<div class='alert alert-success text-center'> L' <b>article</b> a bien été supprimé </div>";
+            return redirect()->back()->with('message',$message);
+        }else{
+            $message = "<div class='alert alert-danger text-center'> Quelque chose s'est mal passé... veuillez reessayé</div>";
+            return redirect()->back()->with('message',$message);
+        }
+    }
+
+    public function effacer_image_galerie($id_image)
+    {
+        $image_gallerie = Gallerie::findorfail($id_image);
+
+        if($image_gallerie->delete()){
+            $message = "<div class='alert alert-success text-center'> L' <b>image</b> a bien été supprimé </div>";
             return redirect()->back()->with('message',$message);
         }else{
             $message = "<div class='alert alert-danger text-center'> Quelque chose s'est mal passé... veuillez reessayé</div>";

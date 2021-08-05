@@ -20,7 +20,7 @@ class CreateMenusTable extends Migration
             $table->integer('reduction')->default(0);
             $table->enum('etat_promotion',['false','true']);
             $table->enum('type',['parent','menu_simple']);  // pour le rangement dans le menu
-            $table->string('titre')->unique();
+            $table->string('titre');
             $table->string('icone')->nullable();
             $table->string('image_illustration')->nullable();
             $table->boolean('present_sur_accueil')->default(true);

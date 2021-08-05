@@ -13,6 +13,7 @@ use App\Models\StatistiqueAchat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use stdClass;
 use function Sodium\add;
 
 class PanierController extends Controller
@@ -146,7 +147,15 @@ class PanierController extends Controller
         $le_panier = Session::get('panier');
         $le_panier = $le_panier;
 
-        $infos_client = Session::has('infos_client') ? Session::get('infos_client') : [];
+        $infos_client = new stdClass();
+        $infos_client->nom = '';
+        $infos_client->email = '';
+        $infos_client->adresse = '';
+        $infos_client->telephone = '';
+
+        if(Session::has('infos_client')) {
+           $infos_client = Session::get('infos_client');
+       }
 //        dd($infos_client);
 
         return view('panier',compact('infos_generales', 'menus_principaux','le_panier','liste_categories','infos_client') );

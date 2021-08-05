@@ -71,21 +71,20 @@ class AccueilController extends Controller
 
     public function apropos()
     {
+
         $infos_generales = InfosGenerale::first();
-        $menus_principaux = Menu::where('id_parent','=',null)->get();
+        $menus_principaux = Menu::where('id_parent','=',null)->take(5)->get();
+        $liste_categories = Menu::where('type','=','menu_simple')->get();
 
-        $cinq_au_hasard = Article::inRandomOrder()->limit(3)->get();
-        $trois_de_la_meme_categorie = Article::orderBy('id','desc')->take(3)->get();
-
-        $pub_1 = Publicite::first();
-        $pub_2 = Publicite::skip(1)->first();
-        $pub_3 = Publicite::skip(2)->first();
-
-//        dd($pub_1,$pub_2,$pub_3);
+        //initialiser le panier
+        $this->le_panier = Session::has('panier') ? Session::get('panier') : ['contenu'=>[],'nb_article'=>0,'grand_total'=>0];
+        Session::put('panier', $this->le_panier);
+        Session::save();
+        $this->le_panier = Session::get('panier');
+        $le_panier = $this->le_panier;
 
         return view('apropos',compact('infos_generales',
-                'menus_principaux','cinq_au_hasard','trois_de_la_meme_categorie',
-                'pub_1','pub_2','pub_3')
-        );
+        'liste_categories','menus_principaux','le_panier'
+            ));
     }
 }

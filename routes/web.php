@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\BoutiqueController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FrontArticleController;
 use App\Http\Controllers\InfoGeneraleController;
@@ -146,6 +147,9 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function 
     Route::put('/gestion-menu/{id_menu}',[MenuController::class,'modifier_menu'])->name('modifier_menu');
     Route::delete('/gestion-menu/{id_menu}',[MenuController::class,'supprimer_menu'])->name('supprimer_menu');
 
+    //Client
+    Route::get('/liste-des-clients',[ClientController::class,'index'])->name('liste_des_clients');
+
     //promotion par categorie
     Route::get('/promotion-sur-categorie',[MenuController::class,'promo_categorie'])->name('promo_categorie');
     Route::put('/promotion-sur-categorie/{id_menu}',[MenuController::class,'modifier_promotion_categorie'])->name('modifier_promotion_categorie');
@@ -164,6 +168,7 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->group(function 
     Route::get('/editer-article/{id_article}',[ArticleController::class,'editer_article'])->name('editer_article');
     Route::put('/modifier-article/{id_article}',[ArticleController::class,'modifier_article'])->name('modifier_article');
     Route::delete('/supprimer-article/{id_article}',[ArticleController::class,'supprimer_article'])->name('supprimer_article');
+    Route::delete('/effacer-image-galerie-article/{id_article}',[ArticleController::class,'effacer_image_galerie'])->name('effacer_image_galerie');
 
 //=========================newsletter
     Route::get('/newsletter',[NewsletterController::class,'index'])->name('newsletter');
